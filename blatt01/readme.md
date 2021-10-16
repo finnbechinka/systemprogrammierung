@@ -3,8 +3,6 @@ Schreiben Sie ein C-Programm, welches die größtmögliche unsigned int Zahl auf
 
 Verwenden Sie hierzu nicht die Kenntnis der systemintern verwendeten Bytes (sizeof, …). Nutzen Sie auch nicht die Konstanten/Makros/Funktionen aus limits.h oder float.h oder anderen Headerdateien!
 
-Einstieg in C-Programmierung: Grenzen der Datenbereiche  
-
 ## Schleifen, Umgang mit Funktionen aus der Standard-Bibliothek (1P)  
 Schreiben Sie ein C-Programm, welches für alle Winkelwerte zwischen 0 und 360 Grad in 10-Grad-Schritten den Sinus berechnet und auf drei Stellen nach dem Komma genau ausgibt. Geben Sie jeweils auch den Winkel mit aus, beispielsweise
 ~~~
