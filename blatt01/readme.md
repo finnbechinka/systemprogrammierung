@@ -18,8 +18,6 @@ Wo finden Sie die Sinus-Funktion? Wie teilen Sie das dem Compiler (und Ihrer IDE
 
 Welchen Datentyp nutzen Sie sinnvollerweise für die Iteration? Welchen Datentyp erhält die Sinus-Funktion als Eingabe? Nutzt die Sinus-Funktion als Eingabe Grad oder Bogenmaß (Radian)?
 
-Einstieg in C-Programmierung: Schleifen in C; Nutzung von man-Pages: __man 3 sin__  
-
 ## Ein- und Ausgabe, Schleifen (2P)  
 Schreiben Sie ein C-Programm, welches für die Eingabe einer positiven ganzen Zahl n folgende Ausgaben produziert. Nutzen Sie dazu __scanf()__ und __printf()__ aus __stdio.h.__ Nutzen Sie unterschiedliche Schleifenkonstrukte!
 
