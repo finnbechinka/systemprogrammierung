@@ -54,7 +54,7 @@ Geben Sie nach jeder Operation/Prüfung das Ergebnis aus.
 Das zu betrachtende Bit und die Zahl können im Hauptprogramm fest codiert werden. Sie können natürlich auch beide Zahlen im Hauptprogramm als Tastatureingabe einlesen.  
 ## Casts: Implizite und explizite Typumwandlungen (1P)
 Geben Sie alle unnötigen bzw. unsinnigen Typumwandlungen (casts) in folgendem Codefragment an.  
-~~~
+~~~c
 double x;
 x = (float)7/4;                 x = (double)(7/4);
 x = (double)(7/(float)4);       x = (double)7/4;
