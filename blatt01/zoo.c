@@ -5,11 +5,11 @@
 
 typedef enum viech
 {
-    MAMMAL,
-    FISH,
-    BIRD,
-    AMPHIBIAN,
-    REPTILE
+    MAMMAL = 110,
+    FISH = 104,
+    BIRD = 101,
+    AMPHIBIAN = 102,
+    REPTILE = 100
 } Viech;
 
 typedef struct animal
@@ -20,13 +20,54 @@ typedef struct animal
     float food_weight;
 } Animal;
 
-Animal zoo[ANIMALCOUNT] = {{MAMMAL, 'a', 3, 5},
-                           {FISH, 'b', 4, 6},
-                           {BIRD, 'c', 5, 7},
-                           {AMPHIBIAN, 'd', 6, 8}};
+Animal zoo[ANIMALCOUNT] = {{.species = MAMMAL, .name = 'a', .age = 3, .food_weight = 5},
+                           {.species = FISH, .name = 'b', .age = 4, .food_weight = 6},
+                           {.species = BIRD, .name = 'c', .age = 5, .food_weight = 7},
+                           {.species = REPTILE, .name = 'd', .age = 6, .food_weight = 8}};
+
+float calculate_average_age()
+{
+    float sum;
+    int count;
+    int i;
+    for (i = 0; i < ANIMALCOUNT; i++)
+    {
+        char x;
+        if (zoo[i].name[0] != x)
+        {
+            sum += zoo[i].age;
+            count++;
+        }
+    }
+    printf("%f , %d\n", sum, count);
+    return sum / count;
+}
+
+void more_food()
+{
+    int i;
+    for (i = 0; i < ANIMALCOUNT; i++)
+    {
+        char x;
+        if (zoo[i].name[0] != x)
+        {
+            printf("%.2f\n", zoo[i].food_weight);
+            zoo[i].food_weight = zoo[i].food_weight * ((float)zoo[i].species / 100);
+            printf("%.2f\n", zoo[i].food_weight);
+        }
+    }
+}
+
+void print_animal(int index)
+{
+    printf("\nAnimal      : %d", index);
+    printf("\nSpecies     : %d", zoo[index].species);
+    printf("\nAge         : %d", zoo[index].age);
+    printf("\nFood weight : %.2f", zoo[index].food_weight);
+}
 
 int main()
 {
-    
+    print_animal(2);
     return EXIT_SUCCESS;
 }
