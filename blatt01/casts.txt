@@ -1,0 +1,6 @@
+x = (float)7/4; -> Falsches Ergebnis
+x = (double)(7/(float)4); -> nur (double) oder (float) nötig
+x = (double)(7/4.0);  -> (double) unnötig
+x = (double)(7/4); -> Falsches Ergebnis
+x = (double)7/4; -> richtig
+x = (double)7.0f/4; -> (double) unnötig
