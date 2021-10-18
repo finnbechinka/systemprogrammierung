@@ -66,8 +66,23 @@ void print_animal(int index)
     printf("\nFood weight : %.2f", zoo[index].food_weight);
 }
 
+void print_zoo()
+{
+    printf("\nprint_zoo:\n------------");
+    int i;
+    for (i = 0; i < ANIMALCOUNT; i++)
+    {
+        char x;
+        if (zoo[i].name[0] != x)
+        {
+            print_animal(i);
+            printf("\n------------");
+        }
+    }
+}
+
 int main()
 {
-    print_animal(2);
+    print_zoo();
     return EXIT_SUCCESS;
 }
