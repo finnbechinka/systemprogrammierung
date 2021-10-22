@@ -4,7 +4,7 @@
 int main()
 {
     double x;
-    x = 7.0f/4;
+    x = (float)7/4;
     printf("%lf", x);
 
     return EXIT_SUCCESS;
