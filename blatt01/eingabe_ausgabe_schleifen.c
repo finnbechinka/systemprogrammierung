@@ -4,7 +4,8 @@
 void sterneReihe(int n)
 {
     printf("\n%d Sterne in einer Reihe:\n", n);
-    for (int i = 0; i < n; i++)
+    int i;
+    for (i = 0; i < n; i++)
     {
         printf("*");
     }
@@ -14,9 +15,10 @@ void sterneReihe(int n)
 void pyramideLinks(int n)
 {
     printf("\nlinksbuendige Pyramide:\n");
-    for (int i = 0; i < n; i++)
+    int i,j;
+    for (i = 0; i < n; i++)
     {
-        for (int j = 0; j <= i; j++)
+        for (j = 0; j <= i; j++)
         {
             printf("*");
         }
@@ -30,13 +32,14 @@ void pyramideZentriert(int n)
     {
         printf("\nZentrierte Pyramide:\n");
         int spacing = n / 2;
-        for (int i = 0; i < n; i = i + 2)
+        int i,j,k;
+        for (i = 0; i < n; i = i + 2)
         {
-            for (int j = 0; j < spacing; j++)
+            for (j = 0; j < spacing; j++)
             {
                 printf(" ");
             }
-            for (int k = 0; k <= i; k++)
+            for (k = 0; k <= i; k++)
             {
                 printf("*");
             }
