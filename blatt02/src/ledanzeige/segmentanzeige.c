@@ -27,12 +27,12 @@ int check_for_bits(byte x, byte mask)
 void TM1637_write_byte(byte wr_data)
 {
     int i;
-    /*printf("byte, %d: \n",wr_data);*/
+    printf("byte, %d: \n",wr_data);
     for(i = 0; i < 8; i++)
     {
         digitalWrite(PIN_CLOCK, LOW);
         delayMicroseconds(DELAY_TIMER);
-        /*printf("%d %d %d\n",wr_data, (byte) pow(2.0,i), check_for_bits(wr_data, (byte) pow(2.0, i)));*/
+        printf("%d %d %d\n",wr_data, (byte) pow(2.0,i), check_for_bits(wr_data, (byte) pow(2.0, i)));
         if(check_for_bits(wr_data, (byte) pow(2.0, i)))
         {
             digitalWrite(PIN_DATA, HIGH);
