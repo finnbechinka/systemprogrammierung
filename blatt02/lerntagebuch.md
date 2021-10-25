@@ -70,13 +70,16 @@ Bitte hier die Umsetzung der Lösung kurz beschreiben:
 
 ## 24.10.2021
 ### Datentypen
-- größtenteils Fertig
+- Größtenteils Fertig
 ### Funktionen
-- fertig bis auf die dokumentation
+- Fertig bis auf die Dokumentation
 ### LED-Demo
-- geht nix, keine ahung warum
+- Geschrieben aber noch nicht auf dem pi ausprobiert
+## 25.10.2021
+### LED-Demo
+- Geht nix, keine Ahnung warum
 ### Make
-- funktioniert aber wir haben es nicht hinbekommen zuerst die .o datein zu erstellen und diese dann zusammenzufügen
+- Funktioniert aber wir haben es nicht hinbekommen zuerst die .o Dateien zu erstellen und diese dann zusammenzufügen
 
 
 # Postmortem
