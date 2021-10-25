@@ -80,7 +80,7 @@ Datentypen:</h2>
 </ol>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Funktionen:</h2>
-<p>Eine Funktion <code><a class="el" href="segmentanzeige_8c.html#a09f1e0171b38b9abbb5d351364cfec71" title="Überträgt einen Byte an die Segmentanzeige. ">TM1637_write_byte(byte wr_data)</a></code> in welcher mit dem im folgendem beschriebendem Algorithmus bits (von wr_data) an die LED-Segmentanteige übertragen wird: Alle Bits werden eizeln von Rechts nach Links laufend übertragen.</p>
+<p>Eine Funktion <code><a class="el" href="segmentanzeige_8c.html#a09f1e0171b38b9abbb5d351364cfec71" title="Überträgt einen byte an die Segmentanzeige. ">TM1637_write_byte(byte wr_data)</a></code> in welcher mit dem im folgendem beschriebendem Algorithmus bits (von wr_data) an die LED-Segmentanteige übertragen wird: Alle Bits werden eizeln von Rechts nach Links laufend übertragen.</p>
 <ol type="1">
 <li>Clock-Pin auf LOW setzen : <code>digitalWrite(PIN_CLOCK, LOW)</code></li>
 <li>Daten-Pin auf LOW (bit == 0) oder HIGH (bit == 1) setzen : <code>digitalWrite(PIN_DATA, [LOW ODER HIGH])</code></li>
@@ -118,15 +118,24 @@ Umsetzung</h1>
 <h3><a class="anchor" id="autotoc_md12"></a>
 Datentypen</h3>
 <ul>
-<li>größtenteils Fertig</li>
-<li>mit doxygen "vertraut" machen </li>
+<li>größtenteils Fertig </li>
 </ul>
 <h3><a class="anchor" id="autotoc_md13"></a>
 Funktionen</h3>
 <ul>
-<li>fertig bis auf die dokumentation</li>
+<li>fertig bis auf die dokumentation </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
+LED-Demo</h3>
+<ul>
+<li>geht nix, keine ahung warum </li>
+</ul>
+<h3><a class="anchor" id="autotoc_md15"></a>
+Make</h3>
+<ul>
+<li>geht auch nicht so wie wir das wollen</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Postmortem</h1>
 <p>tbd </p>
 </div></div><!-- contents -->

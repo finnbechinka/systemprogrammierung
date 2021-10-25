@@ -1,4 +1,15 @@
-/** @file segmentanzeige.c */
+/**
+ * @file segmentanzeige.c
+ * @author Finn Bechinka (finn.bechinka@fh-bielefeld.de)
+ * @author Michel-Andre Witt (michel-andre.witt@fh-bielefeld.de)
+ * @author Dennis Edler (dennis.edler@fh-bielefeld.de)
+ * @brief TODO
+ * @version 0.1
+ * @date 2021-10-25
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,9 +21,11 @@
 #define one_second 1000000
 
 /**
- * Überprüft of bestimmte Bits gesetzt sind.
+ * @brief Überprüft ob bei einem byte bestimmte bits gesetzt sind
  * 
- * TODO
+ * @param x der byte welcher überprüft wird
+ * @param mask die maske gegen welche gerüft wird
+ * @return int 0 wenn bit(s) nicht übereinstimmen, 1 wenn bit(s) übereinstimmen
  */
 int check_for_bits(byte x, byte mask)
 {
@@ -20,9 +33,9 @@ int check_for_bits(byte x, byte mask)
 }
 
 /**
- * Überträgt einen Byte an die Segmentanzeige.
+ * @brief Überträgt einen byte an die Segmentanzeige
  * 
- * TODO
+ * @param wr_data der byte welcher bit-weise übertragen wird
  */
 void TM1637_write_byte(byte wr_data)
 {
@@ -50,6 +63,12 @@ void TM1637_write_byte(byte wr_data)
     /*printf("write byte\n");*/
 }
 
+/**
+ * @brief Demonstriert LED Anzeige
+ * 
+ * Wenns denn funktioniert...
+ * 
+ */
 void led_demo(void)
 {
     delayMicroseconds(one_second);

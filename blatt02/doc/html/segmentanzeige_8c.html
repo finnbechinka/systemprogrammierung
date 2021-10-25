@@ -88,13 +88,13 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:acca2b88d42d07c22e74021a7f0958a68"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="segmentanzeige_8c.html#acca2b88d42d07c22e74021a7f0958a68">check_for_bits</a> (<a class="el" href="segmentanzeige_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> x, <a class="el" href="segmentanzeige_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> mask)</td></tr>
-<tr class="memdesc:acca2b88d42d07c22e74021a7f0958a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Überprüft of bestimmte Bits gesetzt sind.  <a href="#acca2b88d42d07c22e74021a7f0958a68">More...</a><br /></td></tr>
+<tr class="memdesc:acca2b88d42d07c22e74021a7f0958a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Überprüft ob bei einem byte bestimmte bits gesetzt sind.  <a href="#acca2b88d42d07c22e74021a7f0958a68">More...</a><br /></td></tr>
 <tr class="separator:acca2b88d42d07c22e74021a7f0958a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f1e0171b38b9abbb5d351364cfec71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="segmentanzeige_8c.html#a09f1e0171b38b9abbb5d351364cfec71">TM1637_write_byte</a> (<a class="el" href="segmentanzeige_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> wr_data)</td></tr>
-<tr class="memdesc:a09f1e0171b38b9abbb5d351364cfec71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Überträgt einen Byte an die Segmentanzeige.  <a href="#a09f1e0171b38b9abbb5d351364cfec71">More...</a><br /></td></tr>
+<tr class="memdesc:a09f1e0171b38b9abbb5d351364cfec71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Überträgt einen byte an die Segmentanzeige.  <a href="#a09f1e0171b38b9abbb5d351364cfec71">More...</a><br /></td></tr>
 <tr class="separator:a09f1e0171b38b9abbb5d351364cfec71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af50fbd607e28542ccb1729b723cbffa7"><td class="memItemLeft" align="right" valign="top"><a id="af50fbd607e28542ccb1729b723cbffa7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>led_demo</b> (void)</td></tr>
+<tr class="memitem:af50fbd607e28542ccb1729b723cbffa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="segmentanzeige_8c.html#af50fbd607e28542ccb1729b723cbffa7">led_demo</a> (void)</td></tr>
+<tr class="memdesc:af50fbd607e28542ccb1729b723cbffa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demonstriert LED Anzeige.  <a href="#af50fbd607e28542ccb1729b723cbffa7">More...</a><br /></td></tr>
 <tr class="separator:af50fbd607e28542ccb1729b723cbffa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top"><a id="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
@@ -127,8 +127,36 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Überprüft of bestimmte Bits gesetzt sind. </p>
-<p>TODO </p>
+<p>Überprüft ob bei einem byte bestimmte bits gesetzt sind. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>der byte welcher überprüft wird </td></tr>
+    <tr><td class="paramname">mask</td><td>die maske gegen welche gerüft wird </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int 0 wenn bit(s) nicht übereinstimmen, 1 wenn bit(s) übereinstimmen </dd></dl>
+
+</div>
+</div>
+<a id="af50fbd607e28542ccb1729b723cbffa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af50fbd607e28542ccb1729b723cbffa7">&#9670;&nbsp;</a></span>led_demo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void led_demo </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Demonstriert LED Anzeige. </p>
+<p>Wenns denn funktioniert... </p>
 
 </div>
 </div>
@@ -148,8 +176,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Überträgt einen Byte an die Segmentanzeige. </p>
-<p>TODO </p>
+<p>Überträgt einen byte an die Segmentanzeige. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wr_data</td><td>der byte welcher bit-weise übertragen wird </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

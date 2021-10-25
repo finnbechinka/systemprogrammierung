@@ -17,12 +17,11 @@
 \begin{DoxyCompactItemize}
 \item 
 int \hyperlink{segmentanzeige_8c_acca2b88d42d07c22e74021a7f0958a68}{check\+\_\+for\+\_\+bits} (\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte} x, \hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte} mask)
-\begin{DoxyCompactList}\small\item\em Überprüft of bestimmte Bits gesetzt sind. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Überprüft ob bei einem byte bestimmte bits gesetzt sind. \end{DoxyCompactList}\item 
 void \hyperlink{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}{T\+M1637\+\_\+write\+\_\+byte} (\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte} wr\+\_\+data)
-\begin{DoxyCompactList}\small\item\em Überträgt einen Byte an die Segmentanzeige. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}\label{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}} 
-void {\bfseries led\+\_\+demo} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Überträgt einen byte an die Segmentanzeige. \end{DoxyCompactList}\item 
+void \hyperlink{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}{led\+\_\+demo} (void)
+\begin{DoxyCompactList}\small\item\em Demonstriert L\+ED Anzeige. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{segmentanzeige_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{segmentanzeige_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
 int {\bfseries main} ()
 \end{DoxyCompactItemize}
@@ -37,9 +36,29 @@ int {\bfseries main} ()
 
 
 
-Überprüft of bestimmte Bits gesetzt sind. 
+Überprüft ob bei einem byte bestimmte bits gesetzt sind. 
 
-T\+O\+DO \mbox{\Hypertarget{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}\label{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}} 
+
+\begin{DoxyParams}{Parameters}
+{\em x} & der byte welcher überprüft wird \\
+\hline
+{\em mask} & die maske gegen welche gerüft wird \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 wenn bit(s) nicht übereinstimmen, 1 wenn bit(s) übereinstimmen 
+\end{DoxyReturn}
+\mbox{\Hypertarget{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}\label{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}} 
+\index{segmentanzeige.\+c@{segmentanzeige.\+c}!led\+\_\+demo@{led\+\_\+demo}}
+\index{led\+\_\+demo@{led\+\_\+demo}!segmentanzeige.\+c@{segmentanzeige.\+c}}
+\subsubsection{\texorpdfstring{led\+\_\+demo()}{led\_demo()}}
+{\footnotesize\ttfamily void led\+\_\+demo (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Demonstriert L\+ED Anzeige. 
+
+Wenns denn funktioniert... \mbox{\Hypertarget{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}\label{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}} 
 \index{segmentanzeige.\+c@{segmentanzeige.\+c}!T\+M1637\+\_\+write\+\_\+byte@{T\+M1637\+\_\+write\+\_\+byte}}
 \index{T\+M1637\+\_\+write\+\_\+byte@{T\+M1637\+\_\+write\+\_\+byte}!segmentanzeige.\+c@{segmentanzeige.\+c}}
 \subsubsection{\texorpdfstring{T\+M1637\+\_\+write\+\_\+byte()}{TM1637\_write\_byte()}}
@@ -47,6 +66,10 @@ T\+O\+DO \mbox{\Hypertarget{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}
 
 
 
-Überträgt einen Byte an die Segmentanzeige. 
+Überträgt einen byte an die Segmentanzeige. 
 
-T\+O\+DO 
+
+\begin{DoxyParams}{Parameters}
+{\em wr\+\_\+data} & der byte welcher bit-\/weise übertragen wird \\
+\hline
+\end{DoxyParams}

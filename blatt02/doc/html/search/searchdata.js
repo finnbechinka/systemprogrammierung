@@ -2,7 +2,7 @@ var indexSectionsWithContent =
 {
   0: "bcdlst",
   1: "s",
-  2: "ct",
+  2: "clt",
   3: "bds",
   4: "bds",
   5: "bl"
