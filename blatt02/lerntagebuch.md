@@ -71,9 +71,12 @@ Bitte hier die Umsetzung der Lösung kurz beschreiben:
 ## 24.10.2021
 ### Datentypen
 - größtenteils Fertig
-- mit doxygen "vertraut" machen
 ### Funktionen
 - fertig bis auf die dokumentation
+### LED-Demo
+- geht nix, keine ahung warum
+### Make
+- geht auch nicht so wie wir das wollen
 
 
 # Postmortem
