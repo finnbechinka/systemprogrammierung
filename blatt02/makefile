@@ -5,10 +5,10 @@ OBJS = segmentanzeige.o TM1637.o
 
 .PHONY: all clean distclean run doc
 
-all: bin/segmentanzeige
+all: program
 
-run: bin/segmentanzeige
-	bin/segmentanzeige
+run: install
+	bin/program
 
 doc: Doxyfile
 	doxygen Doxyfile
@@ -16,11 +16,15 @@ doc: Doxyfile
 Doxyfile:
 	doxygen -g
 
-bin/segmentanzeige: src/ledanzeige/segmentanzeige.c src/ledanzeige/TM1637.c
-	$(CC) $(CFLAGS) $(LDLIBS) -o bin/segmentanzeige src/ledanzeige/segmentanzeige.c src/ledanzeige/TM1637.c
+program: src/ledanzeige/segmentanzeige.c src/ledanzeige/TM1637.c include/ledanzeige/segmentanzeige.h include/ledanzeige/TM1637.h include/ledanzeige/TM1637_intern.h
+	$(CC) $(CFLAGS) $(LDLIBS) -o program src/ledanzeige/segmentanzeige.c src/ledanzeige/TM1637.c
+
+install: program
+	mkdir -p bin
+	mv program bin
 
 clean:
-	rm -rf segmentanzeige $(OBJS)
+	rm -rf program $(OBJS)
 
 distclean: clean
-	rm -rf bin/ledanzeige lib/ledanzeige doc/ledanzeige
+	rmdir -rf bin/ledanzeige lib/ledanzeige doc/ledanzeige
