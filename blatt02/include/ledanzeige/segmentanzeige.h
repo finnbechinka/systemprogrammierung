@@ -1,13 +1,27 @@
-/** @file segmentanzeige.h */
+/**
+ * @file segmentanzeige.h
+ * @author Finn Bechinka (finn.bechinka@fh-bielefeld.de)
+ * @author Michel-Andre Witt (michel-andre.witt@fh-bielefeld.de)
+ * @author Dennis Edler (dennis.edler@fh-bielefeld.de)
+ * @brief TODO
+ * @version 0.1
+ * @date 2021-10-25
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef segmentanzeige_H
 #define segmentanzeige_H
+
 /**
- * Stellt einen Byte (8 Bit) dar.
+ * @brief Stellt einen Byte (8 Bit) dar.
+ * 
  */
 typedef unsigned char byte;
 
 /**
- * Stellt die Segmente der Anzeige dar.
+ * @brief Stellt die Segmente der Anzeige dar.
+ * 
  */
 typedef enum segment
 {
@@ -18,7 +32,8 @@ typedef enum segment
 } segment;
 
 /**
- * Stellt den Dezimalpunkt der Anzeige dar.
+ * @brief Stellt den Dezimalpunkt der Anzeige dar.
+ * 
  */
 typedef enum dot
 {
@@ -27,7 +42,8 @@ typedef enum dot
 } dot;
 
 /**
- * Stellt die Helligkeitstufen der Anzeige dar.
+ * @brief Stellt die Helligkeitstufen der Anzeige dar.
+ * 
  */
 typedef enum brightness
 {

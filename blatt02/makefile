@@ -11,6 +11,7 @@ run: install
 	bin/program
 
 doc: Doxyfile
+	mkdir -p doc
 	doxygen Doxyfile
 
 Doxyfile:

@@ -76,7 +76,7 @@ Bitte hier die Umsetzung der Lösung kurz beschreiben:
 ### LED-Demo
 - geht nix, keine ahung warum
 ### Make
-- geht auch nicht so wie wir das wollen
+- funktioniert aber wir haben es nicht hinbekommen zuerst die .o datein zu erstellen und diese dann zusammenzufügen
 
 
 # Postmortem
@@ -89,4 +89,6 @@ kritisch zurück:
 -   Wie haben Sie die Probleme letztlich gelöst?
 -->
 
-tbd
+Also es war halt viel Neues auf einmal und damit meinen wir nicht nur neu in dem Sinn, dass wir die Sachen aus der Vorlesung zum ersten Mal umsetzen, sondern auch, dass viele Sachen in den Vorlesungen oder woanders nicht erklärt/angesprochen wurden.
+
+Außerdem haben wir keine Ahnung warum die Ausgabe auf die LED-Anzeige nicht funktioniert und wir haben uns auch ausgiebig mit anderen Gruppen ausgetauscht unter welchen auch Gruppen waren bei welchen es funktioniert hat aber am Ende hatte keiner mehr Ideen warum es nicht funktioniert.
