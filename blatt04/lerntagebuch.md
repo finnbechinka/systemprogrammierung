@@ -37,7 +37,11 @@ Bitte hier die Umsetzung der Lösung kurz beschreiben:
 -->
 
 ## 14.11.2021
+<br>
 - Mit den Aufgaben vertaut gemacht
+
+### Strukturen und Variablen
+- fertig
 
 
 # Postmortem
