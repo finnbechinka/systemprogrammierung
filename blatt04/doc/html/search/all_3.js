@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['segment_0',['segment',['../segmentanzeige_8h.html#abd36269b836121415a7bc694fbe9fde7',1,'segmentanzeige.h']]],
-  ['segmentanzeige_2ec_1',['segmentanzeige.c',['../segmentanzeige_8c.html',1,'']]],
-  ['segmentanzeige_2eh_2',['segmentanzeige.h',['../segmentanzeige_8h.html',1,'']]]
+  ['led_5fdemo',['led_demo',['../segmentanzeige_8c.html#af50fbd607e28542ccb1729b723cbffa7',1,'segmentanzeige.c']]],
+  ['lerntagebuch',['lerntagebuch',['../md_lerntagebuch.html',1,'']]]
 ];

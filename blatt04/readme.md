@@ -1,63 +1,86 @@
-# Blatt 02: Segment-Anzeige, Make [ANSI-C] (F)
+# Blatt 04: Speicherverwaltung [C11] (P)
 
 
 ## Hinweise
 
-Denken Sie daran, ein Lerntagebuch für dieses Blatt zu führen und mit der Lösung hochzuladen!
+Die Vorgaben zu diesem Blatt finden Sie im Repo ```git@git03-ifm-min.ad.fh-bielefeld.de:cagix/sp-w21-vorgaben.git```.
 
-Die Vorgaben zu diesem Blatt finden Sie im Repo ```git@git03-ifm-min.ad.fh-bielefeld.de:cagix/sp-w21-vorgaben.git.```
+Sie finden dort im Ordner tests/speicherverwaltung/ eine Testsuite und ein Makefile, welches Ihnen die Targets test_speicherverwaltung und test_speicherverwaltung_split mit den Vorgabe-Tests anbietet (einmal für Malloc in der Basisversion ohne Split und einmal für die Version mit Split).
 
-## Datentypen (1P)
+Dieses Makefile erwartet Ihre Lösung in den beiden bereits im Repo angelegten Ordnern include/ und src/, d.h. das Headerfile als include/speicherverwaltung/speicherverwaltung.h und die Implementierung (ohne main()-Funktion!) in src/speicherverwaltung/speicherverwaltung.c.
 
-Definieren Sie in der Datei __ledanzeige/segmentanzeige.h__ folgende Strukturen:
+Betrachten Sie diese Tests als ausführbare Spezifikation in Ergänzung zur schriftlichen Aufgabenstellung.
 
-1. Definieren Sie einen vorzeichenlosen Datentyp byte, der Werte von 0 bis 255 halten kann, also 8 Bit “breit” ist.
+## GDB (2P)
 
-2. Definieren Sie einen Aufzählungstyp segment für die Segmente der Anzeige mit den Elementen SEG1 (Wert 0), SEG2 (Wert 1), SEG3 (Wert 2), SEG4 (Wert 3).
+Arbeiten Sie sich selbstständig in die Nutzung des Debuggers GDB (aus dem GCC-Paket) ein.
 
-3. Definieren Sie einen Aufzählungstyp dot für den Dezimalpunkt der Anzeige mit den Elementen OFF (Wert 0) und ON (Wert 1).
-
-4. Definieren Sie einen Aufzählungstyp brightness für die Helligkeit der Anzeige mit den Elementen DARK (Wert 0), MEDIUM (Wert 1) und BRIGHT (Wert 7).
-
-Umgang mit Basisdatentypen und Strukturen
+Demonstrieren Sie in der Abgabe, wie Sie die in diesem Blatt implementierten Funktionalitäten mit dem GDB von der Konsole aus debuggen können. Dabei müssen Sie mindestens die bereits vom Debuggen unter Java bekannten Funktionalitäten zeigen: Breakpoints setzen und löschen, sich Variableninhalte anzeigen lassen sowie in eine Funktion springen bzw. zum nächsten Breakpoint fortfahren.
 
 
-## Funktionen (2P)
+## Basis des simulierten Heaps
 
-Implementieren Sie in der Datei ledanzeige/segmentanzeige.c die Funktion void TM1637_write_byte(byte wr_data), mit der wie nachfolgend beschrieben ein Byte wr_data an die LED-Segmentanzeige übertragen wird.
-
-Die Datenübertragung erfolgt bitweise seriell. Sie müssen zur Übertragung eines Bytes alle 8 Bits einzeln übertragen, beginnend “von rechts”, d.h. mit dem niedrigstwertigen Bit (least significant bit, LSB):
-
-1. Setzen Sie den Clock-Pin auf LOW: Aufruf von digitalWrite(PIN_CLOCK, LOW)
-
-2. Schreiben Sie das Bit auf den Daten-Pin: Aufruf von digitalWrite(PIN_DATA, LOW) (falls Sie den Wert 0 ausgeben wollen; für den Wert 1 ersetzen Sie LOW durch HIGH)
-
-3. Setzen Sie den Clock-Pin auf HIGH: Aufruf von digitalWrite(PIN_CLOCK, HIGH)
-
-Nach jedem Aufruf von digitalWrite() müssen Sie mit Hilfe von delayMicroseconds(DELAY_TIMER) kurz warten, damit sich die Spannung am Pin stabilisieren kann.
-
-Nach dem Senden der 8 Bit wird die Datenübertragung mit dem Aufruf TM1637_ack() abgeschlossen.
-
-Die Pins des genutzten Ports sind in der Vorgabe (ledanzeige/TM1637_intern.h) als Präprozessordirektiven (PIN_CLOCK und PIN_DATA) festgelegt. Sie können diese Literale in Ihrem Code wie Konstanten verwenden.
-
-Die genannten Symbole finden Sie in den Headern ledanzeige/TM1637_intern.h und wiringPi.h.
-
-Umgang mit Funktionen und Header-Dateien
+- Der Heap soll durch ein Byte-Array mempool simuliert werden: char mempool[MEM_POOL_SIZE]. Die Größe des Heaps (Konstante MEM_POOL_SIZE) soll mindestens 4096 Bytes betragen.
+- Die freien Blöcke sollen über eine einfach verlinkte Liste verwaltet werden.
+    ![image](assets/index.png)
+    - Der Pointer freemem (Typ: memblock*) zeigt immer auf den Anfang der Freispeicherliste. Wenn es keine freien Blöcke mehr gibt, hat freemem den Wert NULL.
+    - Jeder Block (frei und belegt) beginnt mit einer Verwaltungsstruktur memblock:
+    ```c
+    typedef struct memblock {
+    size_t size;            // Für User nutzbare Länge des Blocks [Bytes]
+    struct memblock *next;  // Zeiger auf Anfang des nächsten freien Blocks (oder NULL)
+    unsigned short id;      // Fortlaufende und eindeutige Nummer des Blockes
+    } memblock;
+    ```
+- Belegte Blöcke sollen nicht in der Liste verwaltet werden, behalten aber ihre Verwaltungsstruktur. Zur Markierung soll der next-Pointer den “magischen” Integerwert 0xacdcacdc haben (Konstante MAGIC_INT). Zur Vereinfachung des Debuggens erhält jeder belegte Block bei der Allokation eine fortlaufende und eindeutige Nummer.
 
 
-## LED-Demo (1P)
+## Strukturen und Variablen (1P)
 
-Schreiben Sie ein Programm zur Demonstration der LED-Segmentanzeige-Funktionen: Lassen Sie beispielsweise mit zeitlichem Abstand bestimmte Zahlen anzeigen.
-
-Nutzen Sie dazu void TM1637_display_number(float number) aus ledanzeige/TM1637.h.
-
-Rufen Sie vor der Arbeit mit der LED-Segmentanzeige einmal die Vorgabefunktion TM1637_setup() auf. Damit wird die Kommunikation mit der LED-Segmentanzeige initialisiert.
-
-Fügen Sie die Option -lwiringPi (“minus klein-el”) zu Ihren gcc-Optionen hinzu, damit die Bibliothek beim Linken berücksichtigt wird.
-
-Kompilieren eines Programms, Einbinden von eigenen und Standard-Headern sowie Bibliotheken
+1. Definieren Sie die oben genannten Konstanten mittels #define in speicherverwaltung.h.
+2. Definieren Sie die struct memblock und den Typ memblock in speicherverwaltung.h.
+3. Definieren Sie den simulierten Heap mempool und den Pointer freemem als globale Variablen in speicherverwaltung.c. Deklarieren Sie diese zusätzlich in speicherverwaltung.h.
 
 
-## Make (1P)
+## Initialisierung (1P)
 
-Schreiben Sie ein Makefile für Ihr Programm entsprechend den Regeln für das Praktikum.
+Schreiben Sie eine parameterlose Funktion int cm_init(void), die den simulierten Heap initialisiert und den Pointer freemem auf den Beginn der Freispeicherliste zeigen lässt (speicherverwaltung.[h,c]).
+
+Die Funktion darf den Heap nur beim ersten Aufruf initialisieren. Nutzen Sie dafür keine globale Variable!
+
+Rückgabewerte: +1, falls der Heap korrekt initialisiert wurde. 0, falls der Heap bereits initialisiert war (durch einen früheren Aufruf von cm_init()). -1, falls beim Ausführen der Funktion ein Fehler auftrat.
+
+Der initiale (leere) Heap wird als ein einziger freier Block betrachtet. Auch wenn freie Blöcke sonst keine eigene Nummer bekommen, vergeben Sie für den initialen freien Block hier die Nummer 0.
+
+Diese Funktion muss einmal aufgerufen werden, bevor Sie cm_malloc() etc. nutzen können!
+
+# Eigenes Malloc (4P)
+
+Implementieren Sie die Funktion void *cm_malloc(size_t size) (speicherverwaltung.[h,c]), die analog zu malloc() aus der C-Standardbibliothek mit dem first-fit-Verfahren nach dem ersten freien Speicherblock sucht, der eine nutzbare Größe von mindestens __X__ Bytes (mit __X =__ size Bytes) hat:
+
+- Im Erfolgsfall findet der Suchalgorithmus einen Block mit einer nutzbaren Länge von __Y__ Bytes mit __Y >= X__.  
+Der gesamte Block wird alloziert und ein Pointer auf den Beginn des Nutzdatenbereichs des Blocks wird zurückgeliefert. Der allozierte Block erhält eine fortlaufende Nummer. Nutzen Sie dafür keine globale Variable!
+- Falls kein ausreichend großer Block gefunden wird, soll ein NULL-Pointer zurückgeliefert werden.
+
+Für Aufrufe mit 0 (also size=0) darf der Heap nicht verändert werden; Rückgabe: NULL-Pointer.
+
+Zur Suche nach einem freien Block darf cm_malloc() nur die Freispeicherliste nutzen! Wenn dabei ein Fehler bei der Verlinkung in der Freispeicherliste feststellt wird, soll abgebrochen und ein NULL-Pointer zurückgeliefert werden.
+
+Da die Nummer 0 bereits für den initialen (leeren) Block vergeben wurde, startet cm_malloc() mit 1 …
+
+Erweitern Sie die Basisversion der Funktion void *cm_malloc(size_t size): Gefundene Blöcke sollen vor der Allokation aufgeteilt (“gesplittet”) werden, falls sie “deutlich” größer sind als der angeforderte Speicher.
+
+Zusätzlich zur obigen Beschreibung für die Basisversion soll nun im Erfolgsfall gelten:
+
+- Falls sogar gilt: __Y > X + 2 x |Verwaltuksstruktur [Bytes]| + 32 Bytes__ , dann soll der Block gesplittet und der Rest (der hintere Teil) als neuer freier Block anstelle des ursprünglichen Blocks in die Freispeicherliste eingehängt werden. Der erste Teil wird wie in der Basisversion belegt und dem Nutzer zur Verfügung gestellt (“alloziert”).
+- Anderenfalls (wenn der gefundene Block nur “etwas zu groß” ist): Verhalten wie in der Basisversion.
+
+Das zusätzliche Splitten soll beim Kompilieren über die Compiler-Option MALLOCSPLIT aktiviert werden.
+
+# Eigenes Free (2P)
+
+Implementieren Sie die Funktion void cm_free(void *ptr), die sich ähnlich zu free() aus der C-Standardbibliothek verhält (speicherverwaltung.[h,c]): Der übergebene Block soll als freier Block am Anfang der Freispeicherliste eingehängt werden.
+
+Wenn ptr ein NULL-Pointer oder kein durch cm_malloc() angelegter Pointer ist, soll cm_free() nichts tun, d.h. darf in diesem Fall weder den Pointer ptr bzw. das evtl. verwiesene Objekt noch die Freispeicherliste verändern.
+
+Der freemem-Zeiger wird dadurch irgendwann nicht mehr auf den physikalisch ersten freien Block zeigen.
