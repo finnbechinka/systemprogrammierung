@@ -1,33 +1,30 @@
 var indexSectionsWithContent =
 {
-  0: "bcdstw",
-  1: "w",
-  2: "s",
-  3: "ct",
-  4: "b",
-  5: "bds",
-  6: "b"
+  0: "bcdlst",
+  1: "s",
+  2: "clt",
+  3: "bds",
+  4: "bds",
+  5: "bl"
 };
 
 var indexSectionNames =
 {
   0: "all",
-  1: "classes",
-  2: "files",
-  3: "functions",
-  4: "typedefs",
-  5: "enums",
-  6: "pages"
+  1: "files",
+  2: "functions",
+  3: "typedefs",
+  4: "enums",
+  5: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
-  1: "Data Structures",
-  2: "Files",
-  3: "Functions",
-  4: "Typedefs",
-  5: "Enumerations",
-  6: "Pages"
+  1: "Files",
+  2: "Functions",
+  3: "Typedefs",
+  4: "Enumerations",
+  5: "Pages"
 };
 

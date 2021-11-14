@@ -70,10 +70,16 @@ Bitte hier die Umsetzung der Lösung kurz beschreiben:
 
 ## 24.10.2021
 ### Datentypen
-- größtenteils Fertig
-- mit doxygen "vertraut" machen
+- Größtenteils Fertig
 ### Funktionen
-- fertig bis auf die dokumentation
+- Fertig bis auf die Dokumentation
+### LED-Demo
+- Geschrieben aber noch nicht auf dem pi ausprobiert
+## 25.10.2021
+### LED-Demo
+- Geht nix, keine Ahnung warum
+### Make
+- Funktioniert aber wir haben es nicht hinbekommen zuerst die .o Dateien zu erstellen und diese dann zusammenzufügen
 
 
 # Postmortem
@@ -86,4 +92,6 @@ kritisch zurück:
 -   Wie haben Sie die Probleme letztlich gelöst?
 -->
 
-tbd
+Also es war halt viel Neues auf einmal und damit meinen wir nicht nur neu in dem Sinn, dass wir die Sachen aus der Vorlesung zum ersten Mal umsetzen, sondern auch, dass viele Sachen in den Vorlesungen oder woanders nicht erklärt/angesprochen wurden.
+
+Außerdem haben wir keine Ahnung warum die Ausgabe auf die LED-Anzeige nicht funktioniert und wir haben uns auch ausgiebig mit anderen Gruppen ausgetauscht unter welchen auch Gruppen waren bei welchen es funktioniert hat aber am Ende hatte keiner mehr Ideen warum es nicht funktioniert.
