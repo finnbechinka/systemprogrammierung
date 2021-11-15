@@ -40,12 +40,12 @@ int check_for_bits(byte x, byte mask)
 void TM1637_write_byte(byte wr_data)
 {
     int i;
-    printf("byte, %d: \n",wr_data);
+    /*printf("byte, %d: \n",wr_data);*/
     for(i = 0; i < 8; i++)
     {
         digitalWrite(PIN_CLOCK, LOW);
         delayMicroseconds(DELAY_TIMER);
-        printf("%d %d %d\n",wr_data, (byte) pow(2.0,i), check_for_bits(wr_data, (byte) pow(2.0, i)));
+        /*printf("%d %d %d\n",wr_data, (byte) pow(2.0,i), check_for_bits(wr_data, (byte) pow(2.0, i)));*/
         if(check_for_bits(wr_data, (byte) pow(2.0, i)))
         {
             digitalWrite(PIN_DATA, HIGH);
@@ -79,12 +79,16 @@ void led_demo(void)
     TM1637_display_number(081.5);
     delayMicroseconds(one_second);
     TM1637_display_number(187.0);
+    delayMicroseconds(one_second);
+    TM1637_display_number(000.0);
 }
 
 int main()
 {
     printf("start\n");
     TM1637_setup();
+    delayMicroseconds(one_second);
+    TM1637_brightness(0);
     delayMicroseconds(one_second);
     led_demo();
     printf("ende\n");
