@@ -10,12 +10,7 @@
  */
 
 #include <stdlib.h>
-#include <ringbuffer.h>
-
-void free_callback(void *p)
-{
-    free(p);
-}
+#include <ringbuffer/ringbuffer.h>
 
 ring_buffer *init_buffer(const size_t n, void (*f)(void *p)) 
 {
@@ -40,7 +35,7 @@ void *read_buffer(ring_buffer *cb)
     if(cb->count > 0)
     {
         cb->count = cb->count -1;
-        void* tmp = cb->elems[cb->head];
+        void *tmp = cb->elems[cb->head];
         if(cb->head == cb->size -1)
         {
             cb->head = 0;
@@ -58,6 +53,14 @@ void write_buffer(ring_buffer *cb, void *data)
     {
         cb->free_callback(cb->elems[cb->head]);
         cb->elems[cb->head] = data;
+        
+        if(cb->head == cb->size -1)
+        {
+            cb->head = 0;
+        }else
+        {
+            cb->head= cb->head +1;
+        }
     }
     if(cb->count < cb->size)
     {
@@ -75,10 +78,12 @@ void write_buffer(ring_buffer *cb, void *data)
 
 int free_buffer(ring_buffer *cb)
 {
+    size_t count = cb->count;
     int i;
     for(i = 0; i < cb->size; i++)
     {
         cb->free_callback(cb->elems[i]);
     }
     free(cb);
+    return count;
 }

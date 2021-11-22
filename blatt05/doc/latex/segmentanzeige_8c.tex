@@ -1,5 +1,10 @@
-\hypertarget{segmentanzeige_8c}{}\section{src/ledanzeige/segmentanzeige.c File Reference}
-\label{segmentanzeige_8c}\index{src/ledanzeige/segmentanzeige.\+c@{src/ledanzeige/segmentanzeige.\+c}}
+\hypertarget{segmentanzeige_8c}{}\doxysection{src/ledanzeige/segmentanzeige.c File Reference}
+\label{segmentanzeige_8c}\index{src/ledanzeige/segmentanzeige.c@{src/ledanzeige/segmentanzeige.c}}
+
+
+T\+O\+DO.  
+
+
 {\ttfamily \#include $<$math.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
@@ -7,32 +12,53 @@
 {\ttfamily \#include \char`\"{}ledanzeige/\+T\+M1637\+\_\+intern.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}ledanzeige/segmentanzeige.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
-\subsection*{Macros}
+\doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{segmentanzeige_8c_a9e6e5b4d6cfdec53408781d4987e827d}\label{segmentanzeige_8c_a9e6e5b4d6cfdec53408781d4987e827d}} 
 \#define {\bfseries one\+\_\+second}~1000000
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-int \hyperlink{segmentanzeige_8c_acca2b88d42d07c22e74021a7f0958a68}{check\+\_\+for\+\_\+bits} (\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte} x, \hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte} mask)
+int \mbox{\hyperlink{segmentanzeige_8c_acca2b88d42d07c22e74021a7f0958a68}{check\+\_\+for\+\_\+bits}} (\mbox{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} x, \mbox{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} mask)
 \begin{DoxyCompactList}\small\item\em Überprüft ob bei einem byte bestimmte bits gesetzt sind. \end{DoxyCompactList}\item 
-void \hyperlink{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}{T\+M1637\+\_\+write\+\_\+byte} (\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte} wr\+\_\+data)
+void \mbox{\hyperlink{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}{T\+M1637\+\_\+write\+\_\+byte}} (\mbox{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} wr\+\_\+data)
 \begin{DoxyCompactList}\small\item\em Überträgt einen byte an die Segmentanzeige. \end{DoxyCompactList}\item 
-void \hyperlink{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}{led\+\_\+demo} (void)
+void \mbox{\hyperlink{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}{led\+\_\+demo}} (void)
 \begin{DoxyCompactList}\small\item\em Demonstriert L\+ED Anzeige. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{segmentanzeige_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{segmentanzeige_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
 int {\bfseries main} ()
 \end{DoxyCompactItemize}
 
 
-\subsection{Function Documentation}
+\doxysubsection{Detailed Description}
+T\+O\+DO. 
+
+\begin{DoxyAuthor}{Author}
+Finn Bechinka (\href{mailto:finn.bechinka@fh-bielefeld.de}{\texttt{ finn.\+bechinka@fh-\/bielefeld.\+de}}) 
+
+Michel-\/\+Andre Witt (\href{mailto:michel-andre.witt@fh-bielefeld.de}{\texttt{ michel-\/andre.\+witt@fh-\/bielefeld.\+de}}) 
+
+Dennis Edler (\href{mailto:dennis.edler@fh-bielefeld.de}{\texttt{ dennis.\+edler@fh-\/bielefeld.\+de}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/10-\/25
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{segmentanzeige_8c_acca2b88d42d07c22e74021a7f0958a68}\label{segmentanzeige_8c_acca2b88d42d07c22e74021a7f0958a68}} 
-\index{segmentanzeige.\+c@{segmentanzeige.\+c}!check\+\_\+for\+\_\+bits@{check\+\_\+for\+\_\+bits}}
-\index{check\+\_\+for\+\_\+bits@{check\+\_\+for\+\_\+bits}!segmentanzeige.\+c@{segmentanzeige.\+c}}
-\subsubsection{\texorpdfstring{check\+\_\+for\+\_\+bits()}{check\_for\_bits()}}
-{\footnotesize\ttfamily int check\+\_\+for\+\_\+bits (\begin{DoxyParamCaption}\item[{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}]{x,  }\item[{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}]{mask }\end{DoxyParamCaption})}
+\index{segmentanzeige.c@{segmentanzeige.c}!check\_for\_bits@{check\_for\_bits}}
+\index{check\_for\_bits@{check\_for\_bits}!segmentanzeige.c@{segmentanzeige.c}}
+\doxysubsubsection{\texorpdfstring{check\_for\_bits()}{check\_for\_bits()}}
+{\footnotesize\ttfamily int check\+\_\+for\+\_\+bits (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}}]{x,  }\item[{\mbox{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}}]{mask }\end{DoxyParamCaption})}
 
 
 
@@ -49,9 +75,9 @@ int {\bfseries main} ()
 int 0 wenn bit(s) nicht übereinstimmen, 1 wenn bit(s) übereinstimmen 
 \end{DoxyReturn}
 \mbox{\Hypertarget{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}\label{segmentanzeige_8c_af50fbd607e28542ccb1729b723cbffa7}} 
-\index{segmentanzeige.\+c@{segmentanzeige.\+c}!led\+\_\+demo@{led\+\_\+demo}}
-\index{led\+\_\+demo@{led\+\_\+demo}!segmentanzeige.\+c@{segmentanzeige.\+c}}
-\subsubsection{\texorpdfstring{led\+\_\+demo()}{led\_demo()}}
+\index{segmentanzeige.c@{segmentanzeige.c}!led\_demo@{led\_demo}}
+\index{led\_demo@{led\_demo}!segmentanzeige.c@{segmentanzeige.c}}
+\doxysubsubsection{\texorpdfstring{led\_demo()}{led\_demo()}}
 {\footnotesize\ttfamily void led\+\_\+demo (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
 
@@ -59,10 +85,10 @@ int 0 wenn bit(s) nicht übereinstimmen, 1 wenn bit(s) übereinstimmen
 Demonstriert L\+ED Anzeige. 
 
 Wenns denn funktioniert... \mbox{\Hypertarget{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}\label{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}} 
-\index{segmentanzeige.\+c@{segmentanzeige.\+c}!T\+M1637\+\_\+write\+\_\+byte@{T\+M1637\+\_\+write\+\_\+byte}}
-\index{T\+M1637\+\_\+write\+\_\+byte@{T\+M1637\+\_\+write\+\_\+byte}!segmentanzeige.\+c@{segmentanzeige.\+c}}
-\subsubsection{\texorpdfstring{T\+M1637\+\_\+write\+\_\+byte()}{TM1637\_write\_byte()}}
-{\footnotesize\ttfamily void T\+M1637\+\_\+write\+\_\+byte (\begin{DoxyParamCaption}\item[{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}]{wr\+\_\+data }\end{DoxyParamCaption})}
+\index{segmentanzeige.c@{segmentanzeige.c}!TM1637\_write\_byte@{TM1637\_write\_byte}}
+\index{TM1637\_write\_byte@{TM1637\_write\_byte}!segmentanzeige.c@{segmentanzeige.c}}
+\doxysubsubsection{\texorpdfstring{TM1637\_write\_byte()}{TM1637\_write\_byte()}}
+{\footnotesize\ttfamily void T\+M1637\+\_\+write\+\_\+byte (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{segmentanzeige_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}}]{wr\+\_\+data }\end{DoxyParamCaption})}
 
 
 

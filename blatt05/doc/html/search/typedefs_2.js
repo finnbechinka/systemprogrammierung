@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['segment',['segment',['../segmentanzeige_8h.html#a554f46492b97458f1f72636445ac75b9',1,'segmentanzeige.h']]]
+  ['memblock_117',['memblock',['../speicherverwaltung_8h.html#a2f28d9e5c56c195dc67b13e260540ff1',1,'speicherverwaltung.h']]]
 ];

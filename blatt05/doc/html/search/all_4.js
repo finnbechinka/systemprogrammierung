@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['segment',['segment',['../segmentanzeige_8h.html#abd36269b836121415a7bc694fbe9fde7',1,'segment():&#160;segmentanzeige.h'],['../segmentanzeige_8h.html#a554f46492b97458f1f72636445ac75b9',1,'segment():&#160;segmentanzeige.h']]],
-  ['segmentanzeige_2ec',['segmentanzeige.c',['../segmentanzeige_8c.html',1,'']]],
-  ['segmentanzeige_2eh',['segmentanzeige.h',['../segmentanzeige_8h.html',1,'']]]
+  ['fluppie_17',['Fluppie',['../class_fluppie.html',1,'']]],
+  ['foo_18',['Foo',['../class_foo.html',1,'']]],
+  ['free_5fbuffer_19',['free_buffer',['../ringbuffer_8h.html#a7c56f254ccd7c5e9fdf10b7a14d0c719',1,'free_buffer(ring_buffer *cb):&#160;ringbuffer.c'],['../ringbuffer_8c.html#a7c56f254ccd7c5e9fdf10b7a14d0c719',1,'free_buffer(ring_buffer *cb):&#160;ringbuffer.c']]],
+  ['freemem_20',['freemem',['../speicherverwaltung_8h.html#a9a6ff8ff61860abb78b2be0dc02b70d4',1,'freemem():&#160;speicherverwaltung.c'],['../speicherverwaltung_8c.html#a9a6ff8ff61860abb78b2be0dc02b70d4',1,'freemem():&#160;speicherverwaltung.c']]]
 ];

@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -ansi -pedantic -Wall -Iinclude
-LDLIBS = -lm -lwiringPi 
-OBJS = segmentanzeige.o TM1637.o
+CFLAGS = -std=c11 -pedantic -Wall -Iinclude
+LDLIBS = -lm
+OBJS = ringbuffer.o
 
 .PHONY: all clean distclean run doc
 
@@ -15,17 +15,19 @@ doc: Doxyfile
 	doxygen Doxyfile
 
 Doxyfile:
+	rmdir -rf doc
+	mkdir -p doc
 	doxygen -g
 
-program: src/ledanzeige/segmentanzeige.c src/ledanzeige/TM1637.c include/ledanzeige/segmentanzeige.h include/ledanzeige/TM1637.h include/ledanzeige/TM1637_intern.h
-	$(CC) $(CFLAGS) $(LDLIBS) -o program src/ledanzeige/segmentanzeige.c src/ledanzeige/TM1637.c
+program: src/ringbuffer/ringbuffer.c include/ringbuffer/ringbuffer.h
+	$(CC) $(CFLAGS) $(LDLIBS) -o program src/ringbuffer/ringbuffer.c include/ringbuffer/ringbuffer.h
 
 install: program
 	mkdir -p bin
 	mv program bin
 
 clean:
-	rm -rf program $(OBJS)
+	rm -rf $(OBJS) bin/program
 
 distclean: clean
-	rmdir -rf bin/ledanzeige lib/ledanzeige doc/ledanzeige
+	rmdir -rf bin/ringbuffer lib/ringbuffer doc/ringbuffer

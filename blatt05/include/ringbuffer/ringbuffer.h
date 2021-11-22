@@ -14,6 +14,11 @@
 
 #include <stdlib.h>
 
+/**
+ * @brief Stellt den ringbuffer dar.
+ * 
+ */
+
 typedef struct ringbuffer
 {
     size_t size, count, head;
@@ -21,8 +26,37 @@ typedef struct ringbuffer
     void (*free_callback)(void *p);
 } ring_buffer;
 
-int free_buffer(ring_buffer *cb);
-void write_buffer(ring_buffer *cb, void *data);
+/**
+ * @brief initialisiert den ringbuffer.
+ * 
+ * @param n 
+ * @param f 
+ * @return ring_buffer* 
+ */
+ring_buffer *init_buffer(const size_t n, void (*f)(void *p));
+
+/**
+ * @brief gibt das aelteste element aus dem buffer zurueck.
+ * 
+ * @param cb 
+ * @return void* 
+ */
 void *read_buffer(ring_buffer *cb);
 
-#endif ringbuffer_H
+/**
+ * @brief fuegt ein element in den buffer ein.
+ * 
+ * @param cb 
+ * @param data 
+ */
+void write_buffer(ring_buffer *cb, void *data);
+
+/**
+ * @brief leert den buffer.
+ * 
+ * @param cb 
+ * @return int 
+ */
+int free_buffer(ring_buffer *cb);
+
+#endif

@@ -1,0 +1,49 @@
+\hypertarget{speicherverwaltung_8c}{}\doxysection{src/speicherverwaltung/speicherverwaltung.c File Reference}
+\label{speicherverwaltung_8c}\index{src/speicherverwaltung/speicherverwaltung.c@{src/speicherverwaltung/speicherverwaltung.c}}
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$speicherverwaltung.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{speicherverwaltung_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{speicherverwaltung_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+int {\bfseries main} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{speicherverwaltung_8c_a6066c2f7984d30916d1bce0cd7569d75}\label{speicherverwaltung_8c_a6066c2f7984d30916d1bce0cd7569d75}} 
+char \mbox{\hyperlink{speicherverwaltung_8c_a6066c2f7984d30916d1bce0cd7569d75}{mempool}} \mbox{[}\mbox{\hyperlink{speicherverwaltung_8h_a9deeebeafbed2fc5872289ab0cde546c}{M\+E\+M\+\_\+\+P\+O\+O\+L\+\_\+\+S\+I\+ZE}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Stellt den simulierten heap dar. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structmemblock}{memblock}} $\ast$ \mbox{\hyperlink{speicherverwaltung_8c_a9a6ff8ff61860abb78b2be0dc02b70d4}{freemem}}
+\begin{DoxyCompactList}\small\item\em Zeigt auf den Anfang der Freispeicherliste. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+your name (\href{mailto:you@domain.com}{\texttt{ you@domain.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/11-\/14
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{speicherverwaltung_8c_a9a6ff8ff61860abb78b2be0dc02b70d4}\label{speicherverwaltung_8c_a9a6ff8ff61860abb78b2be0dc02b70d4}} 
+\index{speicherverwaltung.c@{speicherverwaltung.c}!freemem@{freemem}}
+\index{freemem@{freemem}!speicherverwaltung.c@{speicherverwaltung.c}}
+\doxysubsubsection{\texorpdfstring{freemem}{freemem}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structmemblock}{memblock}}$\ast$ freemem}
+
+
+
+Zeigt auf den Anfang der Freispeicherliste. 
+
+Ist auf N\+U\+LL gesetzt, wenn es keine freien Blöcke mehr gibt. 

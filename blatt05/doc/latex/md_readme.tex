@@ -1,45 +1,52 @@
-\hypertarget{md_readme_autotoc_md17}{}\doxysection{Hinweise}\label{md_readme_autotoc_md17}
+\hypertarget{md_readme_autotoc_md16}{}\doxysection{Hinweise}\label{md_readme_autotoc_md16}
 Denken Sie daran, ein Lerntagebuch für dieses Blatt zu führen und mit der Lösung hochzuladen!
 
-Die Vorgaben zu diesem Blatt finden Sie im Repo {\ttfamily git@git03-\/ifm-\/min.\+ad.\+fh-\/bielefeld.\+de\+:cagix/sp-\/w21-\/vorgaben.\+git.}\hypertarget{md_readme_autotoc_md18}{}\doxysection{Datentypen (1\+P)}\label{md_readme_autotoc_md18}
-Definieren Sie in der Datei {\bfseries{\mbox{\hyperlink{segmentanzeige_8h}{ledanzeige/segmentanzeige.\+h}}}} folgende Strukturen\+:
+Halten Sie bitte die angegebenen Signaturen und Dateinamen ein. In der Bewertung werden wir u.\+a. eine eigene Testsuite nutzen, die auf den Signaturen und Ordnerstrukturen aufsetzt und die Funktionalitäten testet.
+
+Die Header sollen in \mbox{\hyperlink{ringbuffer_8h}{include/ringbuffer/ringbuffer.\+h}} formuliert werden, die Implementierung (ohne main()) in \mbox{\hyperlink{ringbuffer_8c}{src/ringbuffer/ringbuffer.\+c}}. Außerdem muss das übliche Makefile abgegeben werden sowie eine Datei mit den Tests (Name/\+Ordner beliebig).\hypertarget{md_readme_autotoc_md17}{}\doxysection{Vorbereitung\+: Überblick Ringpuffer}\label{md_readme_autotoc_md17}
+Ein Ringpuffer ist eine spezielle Form der abstrakten Datenstruktur “\+Warteschlange” (Queue), die nur eine beschränkte Anzahl n von Elementen (Datensätzen) aufnehmen kann. Die Daten werden nach dem F\+I\+F\+O-\/\+Prinzip über die Funktion write() am Ende der Schlange eingefügt und mit der Funktion read() vom Anfang der Schlange entnommen. Ist der Puffer voll, wird bei write() das älteste Element entfernt und das neue Element auf dem frei gewordenen Platz eingefügt.
+
+Der Puffer kann effizient durch ein dynamisches Array realisiert werden (dieses Array soll zur Laufzeit mit der Funktion \mbox{\hyperlink{ringbuffer_8h_ab63ff959dccc89c3550c5a48bb9f106a}{init\+\_\+buffer()}} auf dem Heap angelegt werden)\+: \begin{DoxyVerb}Die Integer-Variable head zeigt auf den Anfang der Schlange (ältestes Element).
+Eine Variable count zählt, wie viele Elemente aktuell im Puffer gespeichert sind.
+Die Variable size speichert die Gesamtgröße des Puffers (Convenience-Funktionalität)
+Die Ringstruktur wird durch entsprechende Modulo-Operationen auf den Array-Indizes realisiert.
+\end{DoxyVerb}
 
 
-\begin{DoxyEnumerate}
-\item Definieren Sie einen vorzeichenlosen Datentyp byte, der Werte von 0 bis 255 halten kann, also 8 Bit “breit” ist.
-\item Definieren Sie einen Aufzählungstyp segment für die Segmente der Anzeige mit den Elementen SEG1 (Wert 0), SEG2 (Wert 1), SEG3 (Wert 2), SEG4 (Wert 3).
-\item Definieren Sie einen Aufzählungstyp dot für den Dezimalpunkt der Anzeige mit den Elementen OFF (Wert 0) und ON (Wert 1).
-\item Definieren Sie einen Aufzählungstyp brightness für die Helligkeit der Anzeige mit den Elementen DARK (Wert 0), MEDIUM (Wert 1) und BRIGHT (Wert 7).
-\end{DoxyEnumerate}
-
-Umgang mit Basisdatentypen und Strukturen\hypertarget{md_readme_autotoc_md19}{}\doxysection{Funktionen (2\+P)}\label{md_readme_autotoc_md19}
-Implementieren Sie in der Datei \mbox{\hyperlink{segmentanzeige_8c}{ledanzeige/segmentanzeige.\+c}} die Funktion void \mbox{\hyperlink{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}{TM1637\+\_\+write\+\_\+byte(byte wr\+\_\+data)}}, mit der wie nachfolgend beschrieben ein Byte wr\+\_\+data an die LED-\/\+Segmentanzeige übertragen wird.
-
-Die Datenübertragung erfolgt bitweise seriell. Sie müssen zur Übertragung eines Bytes alle 8 Bits einzeln übertragen, beginnend “von rechts”, d.\+h. mit dem niedrigstwertigen Bit (least significant bit, LSB)\+:
+Definieren Sie einen Datentyp ring\+\_\+buffer für den Ringpuffer mit folgender Struktur\+:
 
 
-\begin{DoxyEnumerate}
-\item Setzen Sie den Clock-\/\+Pin auf LOW\+: Aufruf von digital\+Write(\+PIN\+\_\+\+CLOCK, LOW)
-\item Schreiben Sie das Bit auf den Daten-\/\+Pin\+: Aufruf von digital\+Write(\+PIN\+\_\+\+DATA, LOW) (falls Sie den Wert 0 ausgeben wollen; für den Wert 1 ersetzen Sie LOW durch HIGH)
-\item Setzen Sie den Clock-\/\+Pin auf HIGH\+: Aufruf von digital\+Write(\+PIN\+\_\+\+CLOCK, HIGH)
-\end{DoxyEnumerate}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{struct }\mbox{\hyperlink{structringbuffer}{ring\_buffer}} \{}
+\DoxyCodeLine{    \textcolor{keywordtype}{size\_t} size, count, head;}
+\DoxyCodeLine{    \textcolor{keywordtype}{void} **elems;}
+\DoxyCodeLine{    void (*free\_callback)(\textcolor{keywordtype}{void} *p);}
+\DoxyCodeLine{\};}
+\end{DoxyCode}
 
-Nach jedem Aufruf von digital\+Write() müssen Sie mit Hilfe von delay\+Microseconds(\+DELAY\+\_\+\+TIMER) kurz warten, damit sich die Spannung am Pin stabilisieren kann.
 
-Nach dem Senden der 8 Bit wird die Datenübertragung mit dem Aufruf TM1637\+\_\+ack() abgeschlossen.
+Der Pointer elems realisiert dabei das dynamische Array. Mit Hilfe des Funktionspointers free\+\_\+callback kann man dem Ringpuffer eine Funktion angeben, mit der freizugebende Elemente aus dem Speicher entfernt werden (beispielsweise free(), falls die Elemente mit malloc() alloziert wurden)\hypertarget{md_readme_autotoc_md18}{}\doxysection{Aufgaben}\label{md_readme_autotoc_md18}
+\hypertarget{md_readme_autotoc_md19}{}\doxysubsection{Initialisieren des Ringpuffers (1\+P)}\label{md_readme_autotoc_md19}
+Die Funktion ring\+\_\+buffer $\ast$init\+\_\+buffer(const size\+\_\+t n, void ($\ast$f)(void $\ast$p)) soll mit Hilfe von malloc() einen neuen Ringpuffer anlegen sowie ein Array mit Platz für
 
-Die Pins des genutzten Ports sind in der Vorgabe (\mbox{\hyperlink{_t_m1637__intern_8h_source}{ledanzeige/\+TM1637\+\_\+intern.\+h}}) als Präprozessordirektiven (PIN\+\_\+\+CLOCK und PIN\+\_\+\+DATA) festgelegt. Sie können diese Literale in Ihrem Code wie Konstanten verwenden.
+void-\/\+Pointer allozieren und das Array in elems einhängen. Der Pointer auf die Callback-\/\+Funktion f wird in der Struktur im Pointer free\+\_\+callback gespeichert.
 
-Die genannten Symbole finden Sie in den Headern \mbox{\hyperlink{_t_m1637__intern_8h_source}{ledanzeige/\+TM1637\+\_\+intern.\+h}} und \mbox{\hyperlink{wiring_pi_8h_source}{wiring\+Pi.\+h}}.
+Die Funktion free\+\_\+callback() wird aufgerufen, um ein Element des Puffers freizugeben.\hypertarget{md_readme_autotoc_md20}{}\doxysubsection{Lesen des ersten Elements (1\+P)}\label{md_readme_autotoc_md20}
+Die Funktion void $\ast$read\+\_\+buffer(ring\+\_\+buffer $\ast$cb) soll das erste (älteste) Element aus dem Ringpuffer cb zurückliefern oder N\+U\+LL, wenn der Puffer leer ist.
 
-Umgang mit Funktionen und Header-\/\+Dateien\hypertarget{md_readme_autotoc_md20}{}\doxysection{LED-\/\+Demo (1\+P)}\label{md_readme_autotoc_md20}
-Schreiben Sie ein Programm zur Demonstration der LED-\/\+Segmentanzeige-\/\+Funktionen\+: Lassen Sie beispielsweise mit zeitlichem Abstand bestimmte Zahlen anzeigen.
+Falls ein Element gelesen wurde, steht der interne Startzeiger head anschließend auf dem nächsten Element, der count wird dekrementiert. Der gelesene Datensatz wird nicht freigegeben.\hypertarget{md_readme_autotoc_md21}{}\doxysubsection{Schreiben in den Ringpuffer (1\+P)}\label{md_readme_autotoc_md21}
+Die Funktion void \mbox{\hyperlink{ringbuffer_8c_aee5accf367055deee6cbd46d539089f4}{write\+\_\+buffer(ring\+\_\+buffer $\ast$cb, void $\ast$data)}} soll den Datensatz data in den Puffer hängen.
 
-Nutzen Sie dazu void TM1637\+\_\+display\+\_\+number(float number) aus \mbox{\hyperlink{_t_m1637_8h_source}{ledanzeige/\+TM1637.\+h}}.
+Wenn der Puffer voll ist, soll der älteste Eintrag durch den neuen Datensatz ersetzt werden. Der ersetzte Datensatz soll mittels des Funktionspointers free\+\_\+callback freigegeben werden.\hypertarget{md_readme_autotoc_md22}{}\doxysubsection{Freigeben des Puffers (1\+P)}\label{md_readme_autotoc_md22}
+Die Funktion int \mbox{\hyperlink{ringbuffer_8c_a7c56f254ccd7c5e9fdf10b7a14d0c719}{free\+\_\+buffer(ring\+\_\+buffer $\ast$cb)}} soll den Ringpuffer freigeben. Die Datensätze sollen dabei ebenfalls freigegeben werden (mittels des Funktionspointers free\+\_\+callback).
 
-Rufen Sie vor der Arbeit mit der LED-\/\+Segmentanzeige einmal die Vorgabefunktion TM1637\+\_\+setup() auf. Damit wird die Kommunikation mit der LED-\/\+Segmentanzeige initialisiert.
+Der Rückgabewert entspricht der Anzahl der ursprünglich gespeicherten Datensätze.\hypertarget{md_readme_autotoc_md23}{}\doxysubsection{Testfälle (1\+P)}\label{md_readme_autotoc_md23}
+Schreiben Sie eine Testsuite, in der Sie die implementierten Funktionalitäten ansprechen und sinnvoll testen\+: Ringpuffer anlegen, Daten eintragen und lesen, Ringpuffer löschen; sinnvolle free\+\_\+callback()-\/Funktion definieren und mitgeben …
 
-Fügen Sie die Option -\/lwiring\+Pi (“minus klein-\/el”) zu Ihren gcc-\/\+Optionen hinzu, damit die Bibliothek beim Linken berücksichtigt wird.
+Schauen Sie sich dazu Google\+Test an. Das Framework ist bereits auf dem Raspi installiert.
 
-Kompilieren eines Programms, Einbinden von eigenen und Standard-\/\+Headern sowie Bibliotheken\hypertarget{md_readme_autotoc_md21}{}\doxysection{Make (1\+P)}\label{md_readme_autotoc_md21}
-Schreiben Sie ein Makefile für Ihr Programm entsprechend den Regeln für das Praktikum. 
+Denken Sie daran, dass Ihr Makefile das Ausführen der Tests erlauben soll, bauen Sie also passende Targets ein.
+
+Wann immer Sie das Gefühl haben, eine Debug-\/\+Ausgabe zu brauchen\+: Schreiben Sie stattdessen einfach einen Testfall.
+
+Sie können die Tests auch in einem anderen Framework formulieren, dann muss Ihr Makefile ein Target aufweisen, welches das von Ihnen verwendete Framework lokal für den ausführenden User installiert. 

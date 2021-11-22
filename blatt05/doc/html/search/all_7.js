@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['pin_5fclock_0',['PIN_CLOCK',['../_t_m1637__intern_8h.html#a4f9c1d495d837d141f20242e1e35427f',1,'TM1637_intern.h']]],
-  ['pin_5fdata_1',['PIN_DATA',['../_t_m1637__intern_8h.html#a573681f817f1ec4eca69d66cd687236d',1,'TM1637_intern.h']]]
+  ['led_5fdemo_23',['led_demo',['../segmentanzeige_8c.html#af50fbd607e28542ccb1729b723cbffa7',1,'segmentanzeige.c']]],
+  ['leerzeilen_24',['Leerzeilen',['../class_leerzeilen.html',1,'']]]
 ];
