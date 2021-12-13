@@ -14,7 +14,7 @@
  * @param size is the max. number of elements that can be stored
  * @param alloc_t is the type of the allocator used to allocate the pointers to the elements (optional)
  */
-#include <cstdlib>
+///#include <cstdlib>
 
 template <typename T, size_t size, typename alloc_t = std::allocator<T> >
 class RingBuffer {
@@ -26,8 +26,8 @@ public:
      * pointer `elems` point to this new array
      */
     RingBuffer() : count(0), head(0){
-        T*[]> array(new T*[size]);
-        elems = &array;
+        T* array(new T*[size]);
+        elems = array;
     }
 
     /**
@@ -38,18 +38,18 @@ public:
      */
     ~RingBuffer(){
         if(count == 0){
-            elems.reset();
+            delete(elems);
         }
         if(count > 0){
             for(int i = head; count > 0; count--){
-                m_allocator.deallocate(elems[i]);
+                m_allocator.deallocate(elems[i], 1);
                 if(i == size - 1){
                     i = 0;
                 }else{
                     i++;
                 }
             }
-            elems.reset();
+            delete(elems);
         }
     }
 
@@ -91,10 +91,10 @@ public:
      */
     void writeBuffer(T *data){
         if(count == size){
-            m_allocator.deallocate(elems[head]);
+            m_allocator.deallocate(elems[head], 1);
             elems[head] = data;
         }else{
-            elems[(head+count)] = data;
+            elems[(head + count) % size] = data;
             count = count + 1;
         }
     }

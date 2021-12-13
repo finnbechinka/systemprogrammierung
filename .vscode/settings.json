@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "ringbuffer.h": "c"
+        "ringbuffer.h": "c",
+        "new": "cpp",
+        "iostream": "cpp"
     }
 }
