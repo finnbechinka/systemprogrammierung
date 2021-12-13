@@ -1,7 +1,7 @@
 CXX = g++
 CFLAGS = -Wall -I../../include/ringbuffer
 LDLIBS = 
-OBJS = main.o CustomAllocator.o
+OBJS = ../../bin/main.o ../../bin/CustomAllocator.o
 HEADERS = ringbuffer.h CustomAllocator.h
 
 .PHONY: all clean distclean run doc
@@ -23,10 +23,10 @@ Doxyfile:
 program: $(OBJS)
 	$(CXX) -o $@ $^
 
-main.o: main.cpp
+../../bin/main.o: main.cpp
 	$(CXX) -c $(CFLAGS) $^ -o $@
 
-CustomAllocator.o: CustomAllocator.cpp
+../../bin/CustomAllocator.o: CustomAllocator.cpp
 	$(CXX) -c $(CFLAGS) $^ -o $@
 
 install: program
