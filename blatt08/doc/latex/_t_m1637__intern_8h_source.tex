@@ -1,0 +1,56 @@
+\hypertarget{_t_m1637__intern_8h_source}{}\doxysection{TM1637\+\_\+intern.\+h}
+\label{_t_m1637__intern_8h_source}\index{include/ledanzeige/TM1637\_intern.h@{include/ledanzeige/TM1637\_intern.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * ============================================================================}}
+\DoxyCodeLine{3 \textcolor{comment}{ *                       Internal definitions for TM1637 (Vorgabe)}}
+\DoxyCodeLine{4 \textcolor{comment}{ * ============================================================================}}
+\DoxyCodeLine{5 \textcolor{comment}{ */}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef TM1637\_INTERNAL\_H}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define TM1637\_INTERNAL\_H}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{11 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{segmentanzeige_8h}{ledanzeige/segmentanzeige.h}}"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{comment}{/* Delay in Mikrosekunden, passend fuer TM1637\_write\_byte() */}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define DELAY\_TIMER 100}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{comment}{/* Definition der Pins, wo die Segmentanzeige angeschlossen ist */}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define PIN\_CLOCK 16 }\textcolor{comment}{/* Clock-\/Pin, auf dem Shield PIN 15 */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define PIN\_DATA 27  }\textcolor{comment}{/* Daten-\/Pin, auf dem Shield PIN 16 */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{/*}}
+\DoxyCodeLine{24 \textcolor{comment}{ * Low-\/Level Funktion zum Abschliessen des Datentransfers.}}
+\DoxyCodeLine{25 \textcolor{comment}{ * Muss am Ende von TM1637\_write\_byte() aufgerufen werden.}}
+\DoxyCodeLine{26 \textcolor{comment}{ */}}
+\DoxyCodeLine{27 \textcolor{keywordtype}{void} TM1637\_ack(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{comment}{/*}}
+\DoxyCodeLine{30 \textcolor{comment}{ * Aufgabe: Schreibe ein Byte bitweise heraus (Start LSB)}}
+\DoxyCodeLine{31 \textcolor{comment}{ */}}
+\DoxyCodeLine{32 \textcolor{keywordtype}{void} \mbox{\hyperlink{segmentanzeige_8c_a09f1e0171b38b9abbb5d351364cfec71}{TM1637\_write\_byte}}(\textcolor{keywordtype}{byte} wr\_data);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{/*}}
+\DoxyCodeLine{35 \textcolor{comment}{ * Low-\/Level Funktionen zum Setzen eines Segments.}}
+\DoxyCodeLine{36 \textcolor{comment}{ * Der Parameter data ist eine Bitsequenz nach NUMBER\_TO\_BYTE, ohne den Dezimalpunkt.}}
+\DoxyCodeLine{37 \textcolor{comment}{ */}}
+\DoxyCodeLine{38 \textcolor{keywordtype}{void} TM1637\_display(\mbox{\hyperlink{segmentanzeige_8h_abd36269b836121415a7bc694fbe9fde7}{segment}} seg, \textcolor{keywordtype}{byte} data, \mbox{\hyperlink{segmentanzeige_8h_aab918c44be8d33ac19b291d5c1ad200c}{dot}} point);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{comment}{/*}}
+\DoxyCodeLine{41 \textcolor{comment}{ * Hilfsfunktion: Berechnet zu number die Bitsequenz für die Stelle seq.}}
+\DoxyCodeLine{42 \textcolor{comment}{ * Wird in TM1637\_display\_number() genutzt.}}
+\DoxyCodeLine{43 \textcolor{comment}{ */}}
+\DoxyCodeLine{44 \textcolor{keywordtype}{byte} TM1637\_calculate\_display(\textcolor{keywordtype}{float} number, \mbox{\hyperlink{segmentanzeige_8h_abd36269b836121415a7bc694fbe9fde7}{segment}} seg);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{47 \}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* TM1637\_INTERNAL\_H */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
