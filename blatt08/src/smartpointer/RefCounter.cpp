@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
-#include "RefCounter.h"
+#include "smartpointer/NullPointerException.h"
+#include "smartpointer/RefCounter.h"
+#include "smartpointer/SmartPointer.h"
 
 RefCounter::RefCounter(){
     n = 0;
