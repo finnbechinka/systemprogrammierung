@@ -7,6 +7,7 @@
 #define SMARTPOINTER_H
 
 #include "smartpointer/RefCounter.h"
+#include "smartpointer/NullPointerException.h"
 
 
 /**
@@ -23,7 +24,10 @@ public:
      *
      * @param p is a raw pointer to the object to be shared
      */
-    SmartPointer(T * const p = nullptr);
+    SmartPointer(T * const p = nullptr){
+        *rc = 1;
+        pObj = p;
+    }
 
     /**
      * Copy constructor
@@ -33,7 +37,10 @@ public:
      *
      * @param p is another smart pointer
      */
-    SmartPointer(const SmartPointer& p);
+    SmartPointer(const SmartPointer& p){
+        rc = p.rc;
+        pObj = p.pObj
+    }
 
     /**
      * Destructor
@@ -41,21 +48,38 @@ public:
      * Decrements the reference counter. If it reaches zero, the shared object will
      * be free'd.
      */
-    virtual ~SmartPointer();
+    virtual ~SmartPointer(){
+        *rc = *rc - 1;
+        if(*rc == 0){
+            free(pObj)
+        }
+    }
 
     /**
      * Dereferences the smart pointer
      *
      * @return a pointer to the shared object
      */
-    T *operator->() const;
+    T *operator->() const{
+        if(pObj == nullptr){
+            throw NullPointerException();
+        }else{
+            return pObj;
+        }
+    }
 
     /**
      * Dereferences the smart pointer
      *
      * @return a reference to the shared object
      */
-    T &operator*() const;
+    T &operator*() const{
+        if(pObj == nullptr){
+            throw NullPointerException();
+        }else{
+            return &pObj;
+        }
+    }
 
     /**
      * Assignment
@@ -65,7 +89,10 @@ public:
      *
      * @param p raw pointer to the new object
      */
-    const SmartPointer &operator=(T * const p);
+    const SmartPointer &operator=(T * const p){
+        free(pObj);
+        pObj = p;
+    }
 
     /**
      * Assignment
@@ -75,32 +102,53 @@ public:
      *
      * @param p is another smart pointer
      */
-    const SmartPointer &operator=(const SmartPointer& p);
+    const SmartPointer &operator=(const SmartPointer& p){
+        free(pObj);
+        pObj = p.pObj;
+    }
 
     /**
      * Comparison
      *
      * @return true, if `p` shares the same object
      */
-    bool operator==(const SmartPointer& p) const;
+    bool operator==(const SmartPointer& p) const{
+        if(pObj == p.pObj){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     /**
      * Comparison
      *
      * @return true, if `p` does not shares the same object
      */
-    bool operator!=(const SmartPointer& p) const;
+    bool operator!=(const SmartPointer& p) const{
+        if(pObj != p.pObj){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     /**
      * Boolean context
      *
      * @return true, if we have a shared object; false otherwise
      */
-    operator bool() const;
+    operator bool() const{
+        if(pObj != nullptr){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 private:
     T* pObj;            ///< Pointer to the current shared object
-    RefCounter *rc;     ///< Pointer to the reference counter (used for the current object)
+    RefCounter* rc;     ///< Pointer to the reference counter (used for the current object)
 };
 
 
