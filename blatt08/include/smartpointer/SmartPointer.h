@@ -25,7 +25,7 @@ public:
      * @param p is a raw pointer to the object to be shared
      */
     SmartPointer(T * const p = nullptr){
-        *rc = 1;
+        *rc->inc();
         pObj = p;
     }
 
@@ -49,8 +49,8 @@ public:
      * be free'd.
      */
     virtual ~SmartPointer(){
-        *rc = *rc - 1;
-        if(*rc == 0){
+        *rc->dec();
+        if(*rc->isZero()){
             free(pObj)
         }
     }

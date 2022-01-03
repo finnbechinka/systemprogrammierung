@@ -1,141 +1,71 @@
-# Blatt 07: Ringbuffer: Templates [C++14] (P)
 
-## Aufgaben
+Blatt 08: Smartpointer [C++14] (F)
 
-## Ringpuffer (6P)
+IFM 3.3 Systemprogrammierung
 
-Ein Ringpuffer ist eine Form der abstrakten Datenstruktur “Warteschlange” (Queue), die nur eine beschränkte Anzahl
+BC George, André Matutat, Carsten Gips (FH Bielefeld)
 
-von Elementen (Datensätzen) aufnehmen kann. Die Daten werden nach dem FIFO-Prinzip über die Funktion write() am Ende der Schlange eingefügt und mit der Funktion read() vom Anfang der Schlange entnommen.
+Abgabe ILIAS: Dienstag (04.01.2022) 10:00 Uhr (Lerntagebuch; keine Präsentation)
 
-Aus Effizienzgründen wird bei read() nur der Pointer auf das erste Element zurückgeliefert, das gelesene Element wird aber (noch) nicht aus dem Ringpuffer entfernt. Über ein Attribut head merkt man sich stattdessen, wo das nächste zu lesende Element liegt (auf dem Platz hinter dem aktuell gelesenen). Ist der Puffer voll, wird bei write() das älteste Element entfernt und das neue Element auf dem frei gewordenen Platz im internen Array elems eingefügt.
+    Hinweise
+    Smartpointer in C++
 
-Der Ringpuffer soll Elemente vom Typ T (Template-Parameter) speichern. Es wird davon ausgegangen, dass die Pointer mit einem Allocator vom Typ alloc_t angelegt wurden; entsprechend werden die Elemente (Pointer) im Ringpuffer bei der Freigabe darüber auch wieder freigegeben.
+Hinweise
 
-Der Puffer kann effizient durch ein zur Laufzeit angelegtes Array mit size (Template-Parameter) Plätzen zur Speicherung der Pointer auf die Elemente realisiert werden. Die Ringstruktur wird durch Modulo-Operationen auf den Array-Indizes realisiert.
+Denken Sie daran, ein Lerntagebuch für dieses Blatt zu führen und mit der Lösung hochzuladen!
 
-```cpp
-/**
- * Template class to represent a ring buffer
- *
- * @param T is the type of elements to be stored (via pointer of type `T*`)
- * @param size is the max. number of elements that can be stored
- * @param alloc_t is the type of the allocator used to allocate the pointers to the elements (optional)
- */
-template <typename T, size_t size, typename alloc_t = std::allocator<T>>
-class RingBuffer {
-public:
-    /**
-     * Constructor that creates a new ring buffer for max. `size` elements
-     *
-     * Initialises the attributes and allocates memory for `size` elements of type `T*` and let the
-     * pointer `elems` point to this new array
-     */
-    RingBuffer();
+Die Vorgaben zu diesem Blatt finden Sie im Repo git@git03-ifm-min.ad.fh-bielefeld.de:cagix/sp-w21-vorgaben.git.
 
-    /**
-     * Destructor
-     *
-     * 1. Frees all elements using an allocator of type `alloc_t`
-     * 2. Frees the dynamically allocated array `elems`
-     */
-    ~RingBuffer();
+Ziel dieser Fingerübung ist wieder, ein kleineres Stück Software so zu schreiben und zu dokumentieren, dass andere Personen sich damit in vertretbarer Zeit vertraut machen können und die Software in Betrieb nehmen können. Dies bedeutet, dass Ihr Lerntagebuch inhaltlich so umfangreich sein muss, dass man Ihr Vorgehen problemlos nachvollziehen und den Aufbau Ihrer Software (Design) verstehen kann. Ohne (ausreichendes) Lerntagebuch gibt es deshalb keine Punkte. Zusätzlich soll der Code so dokumentiert sein, dass man beim Lesen versteht, was eine Funktion oder Klasse o.ä. tun soll. Der Code soll auf dem Raspi ohne Warnungen kompilieren, es darf auch keine Abhängigkeiten von einem bestimmten Usernamen oder absoluten Pfaden geben. Das Makefile soll die Übersetzung ermöglichen und auch den Start der Software (vgl. “Makefile mit Standardtargets”). Die Testsuite aus den Vorgaben soll problemfrei durchlaufen.
+Smartpointer in C++
 
-    /**
-     * Reading the first (oldest) element
-     *
-     * If an element has been read, the `head` points to the next element and `count` is decremented.
-     * The read element is **not** released.
-     *
-     * @return Returns a pointer to the first (i.e. oldest) element of the buffer, but does not (yet)
-     * delete it; returns `nullptr` if buffer is empty
-     */
-    T* readBuffer();
+In C++ können u.a. auch Operatoren überladen werden, die zum Umgang mit Pointern dienen. Dadurch lassen sich “Smartpointer” realisieren, die im Umgang den aus Java bekannten Referenzen ähneln und die die typischen Pointer-Probleme1 in C/C++ vermeiden können.
 
-    /**
-     * Adding a new element
-     *
-     * Appends the new element to the end of the queue. If the buffer is full, the oldest element will be
-     * deleted with an allocator of type `alloc_t` and the pointer to the new element will be inserted in
-     * this location.
-     *
-     * @param data is a pointer to the element to be added (allocated with an allocator of type `alloc_t`)
-     */
-    void writeBuffer(T *data);
+Ein Smartpointer soll entsprechend folgende Eigenschaften haben:
 
-    /**
-     * Indicates the number of elements in the ring buffer relative to its size on the LED display
-     */
-    void displayStatus() const;
+    Verwendung soll analog zu normalen Pointern sein (Operatoren * und -> überladen)
+    Smartpointer sollen für beliebige Klassen nutzbar sein (Template-Klasse)
+    Smartpointer haben niemals einen undefinierten Wert: entweder sie zeigen auf ein Objekt oder auf nullptr2
+    Dereferenzierung von nicht existierenden Objekten (d.h. der Smartpointer zeigt intern auf nullptr) führt nicht zum Programmabsturz, sondern zu einer Exception
+    Kopieren von Smartpointern führt dazu, dass sich mehrere Smartpointer das verwiesene Objekt teilen
+    Smartpointer löschen sich selbst (und das verwiesene Objekt, falls kein anderer Smartpointer mehr darauf zeigt), wenn die Smartpointer ungültig werden (bei Verlassen des Scopes bzw. bei explizitem Aufruf von delete)
+    Es gibt keine verwitweten Objekte mehr: Wenn mehrere Smartpointer auf das selbe Objekt zeigen, darf erst der letzte Smartpointer das Objekt aus dem Heap löschen
+    Smartpointer funktionieren nur für mit new erzeugte Objekte
 
-private:
-    alloc_t m_allocator;    ///< allocator to free element pointers
+Es gibt in der C++-Standardbibliothek bereits verschiedene Smartpointer-Klassen. Um diese sicher benutzen zu können, benötigen Sie ein Grundverständnis der in C++11 hinzugekommenen Move-Semantik. => Themen in “Move-Semantik und Rvalue-Referenzen” und “Smartpointer”. Auf diesem Übungsblatt sollen Sie durch die eigenständige Implementierung der Smartpointer sowohl ein Grundverständnis für die prinzipielle Arbeitsweise erwerben als auch Ihre C++-Template-Kenntnisse vertiefen.
+Hilfsklassen (1P)
+Hilfsklasse für den Referenzen-Zähler
 
-    size_t count;           ///< number of elements currently stored in the buffer
-    size_t head;            ///< points to the beginning of the buffer (oldest element)
-    T **elems;              ///< array with `size` places of type `T*`, dynamically allocated
-};
-```
+Für die Smartpointer brauchen Sie einen Zähler, der mitzählt, wie oft auf das Objekt gezeigt wird. Nutzen Sie dafür die Klasse RefCounter. Sie finden die Schnittstelle als Vorgabe im Header smartpointer/RefCounter.h. Implementieren Sie die Klasse in smartpointer/RefCounter.cpp.
 
-Implementieren Sie die Template-Klasse RingBuffer zu den Vorgaben (ringbuffer/RingBuffer.h).
+Referenzen, Klassen und Konstruktoren in C++
+Hilfsklasse für Exceptions
 
-### Allokatoren (4P)
+Bei der Dereferenzierung eines “leeren” Smartpointers, dessen interner Objektzeiger pObj ein nullptr ist, soll eine Exception ausgelöst werden. Implementieren Sie dafür die Klasse NullPointerException als “echte” Exception (std::runtime_error).
 
-Allokatoren kapseln Strategien für die Allokation und die Deallokation von Objekten. C++ stellt hierzu die Template-Klasse std::allocator_traits bereit, die analog zu einer abstrakten Klasse die recht umfangreichen Anforderungen an die Allokatoren(https://en.cppreference.com/w/cpp/named_req/Allocator) erfüllt. Die Container in der Standard-Bibliothek nutzen diese Template-Klasse zur Allokation und Deallokation von Elementen.
+Implementieren Sie diese Klasse direkt im Header smartpointer/NullPointerException.h.
 
-Die Methoden und Definitionen in std::allocator_traits stützen sich auf einigen wenigen in der Klasse des Template-Parameters implementierten Methoden und Definitionen ab. Inhaltlich sind die beiden Methoden allocate() und deallocate() wichtig, der Rest kann je nach Bedarf als Default implementiert werden.
+Vererbung, Exceptions in C++
+Smartpointer in C++ (2P)
 
-```cpp
-/**
- * Template class to represent a custom allocator, to be used via `std::allocator_traits`
- *
- * @param T is the type to be allocated/deallocated
- */
-template <class T>
-class CustomAllocator {
-public:
-    /**
-     * Type trait to access type T
-     */
-    typedef T value_type;
+Implementieren Sie nun die Smartpointer mit dem Klassen-Template smartpointer/SmartPointer. Da es sich um ein Klassen-Template handelt, müssen Sie Ihre Implementierung direkt im Header vornehmen.
 
-    /**
-     * Default constructor
-     */
-    CustomAllocator() {}
+Betrachten Sie die vorgegebene Testsuite wieder als Ergänzung der Aufgabenstellung (“ausführbare Spezifikation”).
 
-    /**
-     * Copy constructor
-     */
-    template <class U> constexpr CustomAllocator (const CustomAllocator <U>&) noexcept {}
+Sie sollen sich in dieser Aufgabe u.a. mit der Arbeitsweise von Smartpointern beschäftigen. Nutzen Sie für Ihre Lösung keine existierenden Smartpointer-Implementierungen!
 
-    /**
-     * Allocates $n$ elements of type T and returns a pointer to the first element
-     *
-     * @param n is the number of elements to be allocated
-     * @return pointer to the first element
-     */
-    T* allocate(size_t n);
+Umgang mit Klassen-Templates und Überladen von Operatoren; Arbeitsweise von Smartpointern
+Standard-Idiome in C++ (2P)
 
-    /**
-     * Free's $n$ elements of type T that were allocated with this allocator using `allocate(n)`
-     *
-     * @param p is a pointer to the element (or to the first of several elements) to be free'd
-     * @param n is the number of elements used in `allocate`
-     */
-    void deallocate(T* p, size_t n) noexcept;
-};
-/// Comparison of allocators
-template <class T, class U>
-bool operator==(const CustomAllocator <T>&, const CustomAllocator <U>&) { return true; }
-template <class T, class U>
-bool operator!=(const CustomAllocator <T>&, const CustomAllocator <U>&) { return false; }
-```
+Gerade im Zusammenhang mit Smartpointern werden in C++ häufig die Idiome “RAII” (Resource Acquisition Is Initialisation) und “PIMPL” (Pointer to Implementation) verwendet.
 
-Implementieren Sie drei verschiedene Allokatoren basierend auf der Template-Klasse CustomAllocator in den Vorgaben (ringbuffer/CustomAllocator.h):
+Recherchieren Sie, was diese Idiome bedeuten und wie sie umgesetzt und genutzt werden. Erläutern Sie im Lerntagebuch anhand selbst implementierter Beispiele die Funktionsweise. Wo werden diese Idiome angewendet und warum?
 
-1. Kapselung von malloc und free aus der C-Standardbibliothek
-2. Kapselung der selbst implementierten Speicherverwaltung von Blatt 04
-3. Einen No-Op-Allokator: Dieser wirft eine std::bad_alloc-Exception beim Versuch, allocate aufzurufen. Beim Aufruf von deallocate passiert nichts.
+Einarbeitung in zwei Standard-Idiome in C++: RAII und PIMPL
 
-Bauen Sie ein Debugging ein, so dass man bei jedem Aufruf von allocate und deallocate über die Anzahl n sowie die allozierten/freigegebenen Speicherbereiche (Start- und End-Adressen) informiert wird.
+HOME
+
+    Dereferenzierung von Null-Pointern oder nicht initialisierten Pointern, Nutzung von delete für Pointer, die nicht mit new erstellt wurden, mehrfaches delete, Speicherlöcher durch Vergessen von delete, Dangling Pointer, verwitwete Objekte, …↩︎
+
+    Sie müssen dafür den g++ auf C++11 oder höher umstellen (--std=c++11) und den Header <cstddef> includen.↩︎
+
