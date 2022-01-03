@@ -3,9 +3,6 @@
 #include "ringbuffer.h"
 #include "CustomAllocator.h"
 
-using namespace std;
-
-
 int main() {
     CustomAllocator<int> intAllocator;
 

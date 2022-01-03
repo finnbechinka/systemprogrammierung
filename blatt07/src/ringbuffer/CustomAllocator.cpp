@@ -16,15 +16,15 @@
 
 using namespace std;
 
-/*
+
 template <class T>
 T* CustomAllocator<T>::allocate(size_t n){
     #ifndef DNDEBUG
     cout << "allocate called."<< endl;
     cout << " n : " << n << endl;
+    #endif
     bad_alloc exception;
     throw exception;
-    #endif
 }
 
 template <class T>
@@ -36,7 +36,7 @@ void CustomAllocator<T>::deallocate(T* p, size_t n) noexcept{
     cout << "end address : " << (p + n-1) << endl;
     #endif
 }
-*/
+
 
 template <class T>
 T* CustomAllocator<T>::allocate(size_t n){
