@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = -Wall -I../../include/smartpointer
+CFLAGS = -Wall -I../../include/
 LDLIBS = 
 OBJS = RefCounter.o
 HEADERS = NullPointerException.h RefCounter.h SmartPointer.h
