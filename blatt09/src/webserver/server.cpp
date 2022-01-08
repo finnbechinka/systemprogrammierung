@@ -1,3 +1,4 @@
+// g++ -std=c++14 -o fbtHttpd server.cpp
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -21,6 +22,24 @@ int echoServer();
 
 
 int main(int argc, char* argv[]) {
+    uint16_t port = 0;
+    string folder = "";
+    if(argc == 3){
+        folder = string(argv[1]);
+        port = stoi(string(argv[2]));
+        DEBUG("folder: " << folder);
+        DEBUG("port: " << port);
+    }else{
+        DEBUG("wrong argument count");
+        return EXIT_FAILURE;
+    }
+    //echoServer();
+
+    return EXIT_SUCCESS;
+}
+
+int echoServer()
+{
     // Socket aufmachen
     int fd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -79,12 +98,4 @@ int main(int argc, char* argv[]) {
     // Sockets schliessen
     DEBUG("Server: schliesse Server-Socket");
     close(fd);
-
-    return 0;
-}
-
-
-int echoServer()
-{
-
 }
