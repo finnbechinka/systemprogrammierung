@@ -22,6 +22,7 @@ using namespace std;
 
 int echoServer(uint16_t port);
 int detectGet(string path, uint16_t port);
+string buildHeader(size_t len, string type);
 
 
 int main(int argc, char* argv[]) {
@@ -41,6 +42,21 @@ int main(int argc, char* argv[]) {
     //echoServer(port);
 
     return EXIT_SUCCESS;
+}
+
+string buildHeader(size_t len, string type){
+    string res;
+
+    res += "HTTP/1.1 200 OK\n";
+    res += "Connection: close\n";
+    res += "Content-Language: de\n";
+    res += "Content-Length: ";
+    res += len;
+    res += "\n";
+    res += type;
+    res += "\n\n";
+
+    return res;
 }
 
 int detectGet(string path, uint16_t port){
@@ -112,11 +128,18 @@ int detectGet(string path, uint16_t port){
             string msg = "req error";
             if(parsedFirstLine.at(0) == "GET"){
                 DEBUG("get req detected");
+                string content;
+                content += "<div>\n";
+                content += path;
+                content += parsedFirstLine.at(1);
+                content += "\n</div>\n";
                 msg.clear();
-                msg += path;
-                msg += parsedFirstLine.at(1);
+                msg += buildHeader(content.length(), "text/html");
+                //msg += content;
                 n = -1;
                 n = send(in_fd, msg.c_str(), msg.length(), 0);
+                n = -1;
+                n = send(in_fd, content.c_str(), content.length(), 0);
             }
             
 

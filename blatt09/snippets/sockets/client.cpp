@@ -62,7 +62,7 @@ int main() {
     n = recv(fd, buf, MAXBUF, 0);
     DEBUG("Client: n=" << n << " Bytes gelesen:");
     DEBUG("Client: Botschaftslaenge: " << strlen(buf));
-    DEBUG("Client: Empfangene Botschaft: \n>>>" << buf << "<<<");
+    DEBUG("Client: Empfangene Botschaft: \n" << buf << "");
 
     // Sockets schliessen
     DEBUG("Client: schliesse Socket");
