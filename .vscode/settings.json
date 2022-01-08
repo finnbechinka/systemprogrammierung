@@ -3,6 +3,9 @@
         "ringbuffer.h": "c",
         "new": "cpp",
         "iostream": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "*.tcc": "cpp",
+        "ostream": "cpp",
+        "iosfwd": "cpp"
     }
 }
