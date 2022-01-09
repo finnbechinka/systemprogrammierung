@@ -49,7 +49,7 @@ int main() {
     int n;
     char buf[MAXBUF];
     memset(buf, 0, MAXBUF);
-    sprintf(buf, "%s", "GET /ex.html HTTP/1.1\n this is a new line");
+    sprintf(buf, "%s", "GET /ex.txt HTTP/1.1\n this is a new line");
     n = -1;
     n = send(fd, buf, strlen(buf), 0);
     DEBUG("Client: n=" << n << " Bytes gesendet");

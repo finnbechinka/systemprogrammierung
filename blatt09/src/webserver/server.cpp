@@ -23,7 +23,7 @@ using namespace std;
 int echoServer(uint16_t port);
 int detectGet(string path, uint16_t port);
 int detectContentType(string path, uint16_t port);
-string buildHeader(size_t len, string type);
+string buildHeader(size_t len, string ext);
 string readFile(FILE* file);
 
 
@@ -47,8 +47,28 @@ int main(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-string buildHeader(size_t len, string type){
+string buildHeader(size_t len, string ext){
     string res;
+    string type = "application/octet-stream";
+
+    if(ext == ".html"){
+        type = "text/html";
+    }
+    if(ext == ".txt" || ext == ".h" || ext == ".c" || ext == ".cpp"){
+        type = "text/plain";
+    }
+    if(ext == ".pdf"){
+        type = "application/pdf";
+    }
+    if(ext == ".png"){
+        type = "image/png";
+    }
+    if(ext == ".jpg"){
+        type = "image/jpeg";
+    }
+    if(ext == ".css"){
+        type = "text/css";
+    }
 
     res += "HTTP/1.1 200 OK\n";
     res += "Connection: close\n";
@@ -152,14 +172,20 @@ int detectContentType(string path, uint16_t port){
                     //rewind(file);
                     string content = readFile(file);
                     string ext = filepath.substr(filepath.find_last_of('.'), filepath.length());
+                    DEBUG("content to be send:\n" << content);
                     msg.clear();
                     msg += buildHeader(content.length(), ext);
+                    msg += content;
                     n = -1;
                     n = send(in_fd, msg.c_str(), msg.length(), 0);
-                    n = -1;
-                    n = send(in_fd, content.c_str(), content.length(), 0);
+                    //n = -1;
+                    //n = send(in_fd, content.c_str(), content.length(), 0);
                     fclose(file);
                 } else {
+                    msg.clear();
+                    msg += "Fehler 404 (Not Found)";
+                    n = -1;
+                    n = send(in_fd, msg.c_str(), msg.length(), 0);
                     DEBUG("file not found");
                 }  
             }
