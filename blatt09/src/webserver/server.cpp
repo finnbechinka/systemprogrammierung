@@ -22,6 +22,7 @@ using namespace std;
 
 string buildHeader(size_t len, string ext);
 string readFile(FILE* file);
+int mysend(int fd, const char *buf, size_t n, int flags);
 
 
 int main(int argc, char* argv[]) {
@@ -74,6 +75,7 @@ int main(int argc, char* argv[]) {
 
             req = (string) buf;
 
+            //Empfangene Nachricht in zeilen aufteilen
             vector<string> result;
             stringstream reqstream(req);
             while(reqstream.good()){
@@ -82,6 +84,7 @@ int main(int argc, char* argv[]) {
                 result.push_back(substr);
             }
 
+            //Erste zeile in bestandteile aufteilen
             vector<string> parsedFirstLine;
             stringstream linestream(result.at(0));
             while(linestream.good()){
@@ -91,36 +94,29 @@ int main(int argc, char* argv[]) {
             }
 
             string msg = "req error";
+            //gucken ob get request
             if(parsedFirstLine.at(0) == "GET"){
                 string filepath;
                 filepath += path;
                 filepath += parsedFirstLine.at(1);
 
                 if (FILE *file = fopen(filepath.c_str(), "r")) {
-                    //fseek(file, 0L, SEEK_END);
-                    //size_t filesize = ftell(file);
-                    //rewind(file);
                     string content = readFile(file);
                     string ext = filepath.substr(filepath.find_last_of('.'), filepath.length());
                     msg.clear();
                     msg += buildHeader(content.length(), ext);
                     msg += content;
-                    n = -1;
-                    n = send(in_fd, msg.c_str(), msg.length(), 0);
-                    //n = -1;
-                    //n = send(in_fd, content.c_str(), content.length(), 0);
+                    mysend(in_fd, msg.c_str(), msg.length(), 0);
                     fclose(file);
                 } else {
                     msg.clear();
                     msg += "Fehler 404 (Not Found)";
-                    n = -1;
-                    n = send(in_fd, msg.c_str(), msg.length(), 0);
+                    mysend(in_fd, msg.c_str(), msg.length(), 0);
                 } 
             }else{
                 msg.clear();
                 msg = (string) buf;
-                n = -1;
-                n = send(in_fd, msg.c_str(), msg.length(), 0);
+                mysend(in_fd, msg.c_str(), msg.length(), 0);
             }
         }
     }
@@ -175,4 +171,17 @@ string readFile(FILE* file){
         content.append(string(line));
     }
     return content;
+}
+
+int mysend(int fd, const char *buf, size_t n, int flags){
+    ssize_t bytesWritten = -1;
+    while(n > 0){
+        bytesWritten = send(fd, buf, n, flags);
+        if(bytesWritten == -1){
+            return -1;
+        }
+        n -= bytesWritten;
+        buf += bytesWritten;
+    }
+    return 0;
 }
