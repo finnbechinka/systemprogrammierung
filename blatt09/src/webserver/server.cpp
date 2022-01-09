@@ -22,7 +22,9 @@ using namespace std;
 
 int echoServer(uint16_t port);
 int detectGet(string path, uint16_t port);
+int detectContentType(string path, uint16_t port);
 string buildHeader(size_t len, string type);
+string readFile(FILE* file);
 
 
 int main(int argc, char* argv[]) {
@@ -38,7 +40,8 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    detectGet(path,port);
+    detectContentType(path,port);
+    //detectGet(path,port);
     //echoServer(port);
 
     return EXIT_SUCCESS;
@@ -57,6 +60,119 @@ string buildHeader(size_t len, string type){
     res += "\n\n";
 
     return res;
+}
+
+string readFile(FILE* file){
+    string content;
+    char line[500];
+    while(fgets(line, 500, file) != NULL){
+        //puts(line);
+        content.append(string(line));
+    }
+    return content;
+}
+
+int detectContentType(string path, uint16_t port){
+    // Socket aufmachen
+    int fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // mehrere Clients koennen Port teilen, Serveradresse direkt wiederverwendbar
+    // vgl. `man 2 setsockopt`
+    int y = 1;
+    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &y, sizeof(int));
+
+    // IP und Port
+    sockaddr_in srv;
+    memset(&srv, 0, sizeof(srv));
+    srv.sin_family = AF_INET;
+    srv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);  // 127.0.0.1
+    srv.sin_port = htons(port);                  // Port 15151
+
+    // Socket an Namen binden
+    bind(fd, (const struct sockaddr *) &srv, sizeof(srv));
+    DEBUG("Server: auf " << inet_ntoa(srv.sin_addr) << ":" << port);
+
+    // Anzahl der Verbindungen
+    listen(fd, 5);
+
+    int n = -1;
+    string req;
+    char buf[MAXBUF];
+    int in_fd;
+    for (;;) { // Server-Schleife
+        // Verbindung annehmen und blockieren, bis Verbindung
+        DEBUG("\n\nServer: Warte auf Verbindung");
+        in_fd = accept(fd, NULL, NULL); // Adresse vom Komm.-Partner interessiert mich nicht
+
+        DEBUG("Server: Verbindung etabliert");
+        for (;;) { // Kommunikation mit Client
+            DEBUG("Server: lese Daten");
+            memset(buf, 0, MAXBUF);
+            n = -1;
+            n = recv(in_fd, buf, MAXBUF, 0);
+            DEBUG("Server: n=" << n << " Bytes empfangen");
+            if (n == 0) {
+                // Besser mit errno pruefen!
+                DEBUG("Server: n==0 => SOCKET CLOSED ON REMOTE END?!");
+                close(in_fd);  // nur den Client-Socket schliessen
+                break; // raus aus der Komm.-Schleife mit Client, naechste Verbindung akzeptieren
+            }
+            DEBUG("Server: Empfangene Botschaft: " << buf << "<<<\n\n");
+
+            req = (string) buf;
+
+            vector<string> result;
+            stringstream reqstream(req);
+            while(reqstream.good()){
+                string substr;
+                getline(reqstream, substr);
+                result.push_back(substr);
+            }
+
+
+            vector<string> parsedFirstLine;
+            stringstream linestream(result.at(0));
+            while(linestream.good()){
+                string substr;
+                getline(linestream, substr, ' ');
+                parsedFirstLine.push_back(substr);
+            }
+
+            string msg = "req error";
+            if(parsedFirstLine.at(0) == "GET"){
+                DEBUG("get req detected");
+                string filepath;
+                filepath += path;
+                filepath += parsedFirstLine.at(1);
+
+                if (FILE *file = fopen(filepath.c_str(), "r")) {
+                    //fseek(file, 0L, SEEK_END);
+                    //size_t filesize = ftell(file);
+                    //rewind(file);
+                    string content = readFile(file);
+                    msg.clear();
+                    msg += buildHeader(content.length(), "text/html");
+                    n = -1;
+                    n = send(in_fd, msg.c_str(), msg.length(), 0);
+                    n = -1;
+                    n = send(in_fd, content.c_str(), content.length(), 0);
+                    fclose(file);
+                } else {
+                    DEBUG("file not found");
+                }  
+            }
+            
+
+            
+            //DEBUG("Server: n=" << n << " Bytes gesendet");
+            //DEBUG("Server: Laenge der Antwort: " << msg.length());
+            //DEBUG("Server: Gesendete Antwort: \n>>>" << msg << "<<<");
+        }
+    }
+
+    // Sockets schliessen
+    DEBUG("Server: schliesse Server-Socket");
+    close(fd);
 }
 
 int detectGet(string path, uint16_t port){
