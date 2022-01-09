@@ -30,10 +30,7 @@ int main(int argc, char* argv[]) {
     if(argc == 3){
         path = string(argv[1]);
         port = stoi(string(argv[2]));
-        DEBUG("path: " << path);
-        DEBUG("port: " << port);
     }else{
-        DEBUG("wrong argument count");
         return EXIT_FAILURE;
     }
 
@@ -54,7 +51,6 @@ int main(int argc, char* argv[]) {
 
     // Socket an Namen binden
     bind(fd, (const struct sockaddr *) &srv, sizeof(srv));
-    DEBUG("Server: auf " << inet_ntoa(srv.sin_addr) << ":" << port);
 
     // Anzahl der Verbindungen
     listen(fd, 5);
@@ -65,23 +61,16 @@ int main(int argc, char* argv[]) {
     int in_fd;
     for (;;) { // Server-Schleife
         // Verbindung annehmen und blockieren, bis Verbindung
-        DEBUG("\n\nServer: Warte auf Verbindung");
         in_fd = accept(fd, NULL, NULL); // Adresse vom Komm.-Partner interessiert mich nicht
 
-        DEBUG("Server: Verbindung etabliert");
         for (;;) { // Kommunikation mit Client
-            DEBUG("Server: lese Daten");
             memset(buf, 0, MAXBUF);
             n = -1;
             n = recv(in_fd, buf, MAXBUF, 0);
-            DEBUG("Server: n=" << n << " Bytes empfangen");
             if (n == 0) {
-                // Besser mit errno pruefen!
-                DEBUG("Server: n==0 => SOCKET CLOSED ON REMOTE END?!");
                 close(in_fd);  // nur den Client-Socket schliessen
                 break; // raus aus der Komm.-Schleife mit Client, naechste Verbindung akzeptieren
             }
-            DEBUG("Server: Empfangene Botschaft: " << buf << "<<<\n\n");
 
             req = (string) buf;
 
@@ -93,7 +82,6 @@ int main(int argc, char* argv[]) {
                 result.push_back(substr);
             }
 
-
             vector<string> parsedFirstLine;
             stringstream linestream(result.at(0));
             while(linestream.good()){
@@ -104,7 +92,6 @@ int main(int argc, char* argv[]) {
 
             string msg = "req error";
             if(parsedFirstLine.at(0) == "GET"){
-                DEBUG("get req detected");
                 string filepath;
                 filepath += path;
                 filepath += parsedFirstLine.at(1);
@@ -115,7 +102,6 @@ int main(int argc, char* argv[]) {
                     //rewind(file);
                     string content = readFile(file);
                     string ext = filepath.substr(filepath.find_last_of('.'), filepath.length());
-                    DEBUG("content to be send:\n" << content);
                     msg.clear();
                     msg += buildHeader(content.length(), ext);
                     msg += content;
@@ -129,7 +115,6 @@ int main(int argc, char* argv[]) {
                     msg += "Fehler 404 (Not Found)";
                     n = -1;
                     n = send(in_fd, msg.c_str(), msg.length(), 0);
-                    DEBUG("file not found");
                 } 
             }else{
                 msg.clear();
@@ -137,22 +122,11 @@ int main(int argc, char* argv[]) {
                 n = -1;
                 n = send(in_fd, msg.c_str(), msg.length(), 0);
             }
-            
-
-            
-            //DEBUG("Server: n=" << n << " Bytes gesendet");
-            //DEBUG("Server: Laenge der Antwort: " << msg.length());
-            //DEBUG("Server: Gesendete Antwort: \n>>>" << msg << "<<<");
         }
     }
 
     // Sockets schliessen
-    DEBUG("Server: schliesse Server-Socket");
     close(fd);
-
-    //detectContentType(path,port);
-    //detectGet(path,port);
-    //echoServer(port);
 
     return EXIT_SUCCESS;
 }
