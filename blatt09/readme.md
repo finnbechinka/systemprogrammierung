@@ -1,71 +1,144 @@
 
-Blatt 08: Smartpointer [C++14] (F)
+Blatt 09: Webserver, Signale [C oder C++14] (P)
 
 IFM 3.3 Systemprogrammierung
 
 BC George, André Matutat, Carsten Gips (FH Bielefeld)
 
-Abgabe ILIAS: Dienstag (04.01.2022) 10:00 Uhr (Lerntagebuch; keine Präsentation)
+Abgabe ILIAS: Dienstag (11.01.2022) 10:00 Uhr, Vorstellung: Praktikum KW02
 
-    Hinweise
-    Smartpointer in C++
+    Vorbereitung: Webserver
+    Aufgaben
 
-Hinweise
+Vorbereitung: Webserver
+Antworten auf GET-Requests im HTTP/1.1-Protokoll
 
-Denken Sie daran, ein Lerntagebuch für dieses Blatt zu führen und mit der Lösung hochzuladen!
+Arbeiten Sie die Dokumentation zu einfachen GET-Requests im HTTP 1.1-Protokoll in der Doku durch: w3.org/Protocols/HTTP/AsImplemented.html.
+Struktur des Aufgabenblattes
 
-Die Vorgaben zu diesem Blatt finden Sie im Repo git@git03-ifm-min.ad.fh-bielefeld.de:cagix/sp-w21-vorgaben.git.
+Auf diesem Blatt implementieren Sie schrittweise einen einfachen Webserver in C oder C++, der HTTP-Anfragen1 auf einem beim Start wählbaren Port port entgegennimmt und Dateien unterhalb eines festen Verzeichnisbaums www-path ausliefert.
 
-Ziel dieser Fingerübung ist wieder, ein kleineres Stück Software so zu schreiben und zu dokumentieren, dass andere Personen sich damit in vertretbarer Zeit vertraut machen können und die Software in Betrieb nehmen können. Dies bedeutet, dass Ihr Lerntagebuch inhaltlich so umfangreich sein muss, dass man Ihr Vorgehen problemlos nachvollziehen und den Aufbau Ihrer Software (Design) verstehen kann. Ohne (ausreichendes) Lerntagebuch gibt es deshalb keine Punkte. Zusätzlich soll der Code so dokumentiert sein, dass man beim Lesen versteht, was eine Funktion oder Klasse o.ä. tun soll. Der Code soll auf dem Raspi ohne Warnungen kompilieren, es darf auch keine Abhängigkeiten von einem bestimmten Usernamen oder absoluten Pfaden geben. Das Makefile soll die Übersetzung ermöglichen und auch den Start der Software (vgl. “Makefile mit Standardtargets”). Die Testsuite aus den Vorgaben soll problemfrei durchlaufen.
-Smartpointer in C++
+Realisieren Sie den Webserver ohne Threads, d.h. eine Anfrage wird sofort bearbeitet, bevor eine neue Verbindung entgegengenommen wird. Der Server soll IPv4-Verbindungen bedienen.
 
-In C++ können u.a. auch Operatoren überladen werden, die zum Umgang mit Pointern dienen. Dadurch lassen sich “Smartpointer” realisieren, die im Umgang den aus Java bekannten Referenzen ähneln und die die typischen Pointer-Probleme1 in C/C++ vermeiden können.
+Der Server wird wie folgt gestartet: fbtHttpd <www-path> <port>. Dabei soll der Server unter dem Port port erreichbar sein. Das Wurzelverzeichnis für den Server soll der Ordner www-path sein, d.h. der Server darf nur Dateien unterhalb dieses Ordners ausliefern.
 
-Ein Smartpointer soll entsprechend folgende Eigenschaften haben:
+Die folgenden Teilaufgaben sollen schrittweise zur Lösung erweitert werden, müssen aber einzeln vorführbar sein. Implementieren Sie also die Teilaufgaben in separaten (Hilfs-) Funktionen/Klassen und geben Sie alle ab.
 
-    Verwendung soll analog zu normalen Pointern sein (Operatoren * und -> überladen)
-    Smartpointer sollen für beliebige Klassen nutzbar sein (Template-Klasse)
-    Smartpointer haben niemals einen undefinierten Wert: entweder sie zeigen auf ein Objekt oder auf nullptr2
-    Dereferenzierung von nicht existierenden Objekten (d.h. der Smartpointer zeigt intern auf nullptr) führt nicht zum Programmabsturz, sondern zu einer Exception
-    Kopieren von Smartpointern führt dazu, dass sich mehrere Smartpointer das verwiesene Objekt teilen
-    Smartpointer löschen sich selbst (und das verwiesene Objekt, falls kein anderer Smartpointer mehr darauf zeigt), wenn die Smartpointer ungültig werden (bei Verlassen des Scopes bzw. bei explizitem Aufruf von delete)
-    Es gibt keine verwitweten Objekte mehr: Wenn mehrere Smartpointer auf das selbe Objekt zeigen, darf erst der letzte Smartpointer das Objekt aus dem Heap löschen
-    Smartpointer funktionieren nur für mit new erzeugte Objekte
+Sie brauchen auf diesem Blatt KEINE Threads!
+Aufgaben
+Kommunikation über TCP-Sockets (1P)
 
-Es gibt in der C++-Standardbibliothek bereits verschiedene Smartpointer-Klassen. Um diese sicher benutzen zu können, benötigen Sie ein Grundverständnis der in C++11 hinzugekommenen Move-Semantik. => Themen in “Move-Semantik und Rvalue-Referenzen” und “Smartpointer”. Auf diesem Übungsblatt sollen Sie durch die eigenständige Implementierung der Smartpointer sowohl ein Grundverständnis für die prinzipielle Arbeitsweise erwerben als auch Ihre C++-Template-Kenntnisse vertiefen.
-Hilfsklassen (1P)
-Hilfsklasse für den Referenzen-Zähler
+Erstellen Sie zunächst die Kommunikation mit TCP-Sockets. Der Server soll IPv4-Verbindungen bedienen und unter der Adresse 127.0.0.1 und dem beim Start angegebenen Port erreichbar sein. Er soll auf eingehende Verbindungen warten. Wenn sich ein Client verbunden hat und eine Botschaft gesendet hat, soll der Server diesem Client antworten und die Verbindung danach beenden. Anschließend wartet der Server auf eine neue Verbindung.
 
-Für die Smartpointer brauchen Sie einen Zähler, der mitzählt, wie oft auf das Objekt gezeigt wird. Nutzen Sie dafür die Klasse RefCounter. Sie finden die Schnittstelle als Vorgabe im Header smartpointer/RefCounter.h. Implementieren Sie die Klasse in smartpointer/RefCounter.cpp.
+Implementieren Sie den Server zunächst als “Echo-Server”, d.h. alle empfangenen Botschaften werden direkt (unverändert) an den Client zurückgesendet. Sie können Ihren Server sehr einfach mit Telnet testen: Mittels telnet 127.0.0.1 <port> verbinden Sie sich und tippen eine Botschaft ein. Die Antwort des Servers muss Ihrer eingetippten Botschaft exakt entsprechen.
 
-Referenzen, Klassen und Konstruktoren in C++
-Hilfsklasse für Exceptions
+Kommunikation über TCP-IP-Sockets
+Erkennen von GET-Requests (HTTP/1.1) (1P)
 
-Bei der Dereferenzierung eines “leeren” Smartpointers, dessen interner Objektzeiger pObj ein nullptr ist, soll eine Exception ausgelöst werden. Implementieren Sie dafür die Klasse NullPointerException als “echte” Exception (std::runtime_error).
+Eine Anfrage im Browser http://127.0.0.1:<PORT>/index.html kommt im Server etwa so an: GET /index.html HTTP/1.1. Eventuell folgen dieser ersten Zeile noch weitere Zeilen, die hier ignoriert werden sollen.
 
-Implementieren Sie diese Klasse direkt im Header smartpointer/NullPointerException.h.
+Der Pfad soll keine Leer- oder Sonderzeichen enthalten, Sie brauchen also kein URL-Encoding implementieren. Weitere Wörter, die eventuell dem Pfad folgen, müssen ignoriert werden. Der Pfad ist relativ und bezieht sich auf den beim Start des Servers angegebenen Verzeichnisbaum www-path.
 
-Vererbung, Exceptions in C++
-Smartpointer in C++ (2P)
+Alle Zeilen sind mit \r\n2 terminiert. Der Request endet mit einer Leerzeile, d.h. nach zwei direkt aufeinanderfolgenden Zeilenenden muss der Server antworten.
 
-Implementieren Sie nun die Smartpointer mit dem Klassen-Template smartpointer/SmartPointer. Da es sich um ein Klassen-Template handelt, müssen Sie Ihre Implementierung direkt im Header vornehmen.
+Erweitern Sie den Echo-Server aus der vorigen Aufgabe um die Erkennung von GET-Requests für das HTTP/1.1-Protokoll3. Senden Sie bei einem erkannten GET-Request den absoluten Pfad der Anfrage als Antwort zurück.
 
-Betrachten Sie die vorgegebene Testsuite wieder als Ergänzung der Aufgabenstellung (“ausführbare Spezifikation”).
+Umgang mit dem HTTP-Protokoll: Erkennen von Requests
+Antworten auf GET-Requests: Header und Content (1P)
 
-Sie sollen sich in dieser Aufgabe u.a. mit der Arbeitsweise von Smartpointern beschäftigen. Nutzen Sie für Ihre Lösung keine existierenden Smartpointer-Implementierungen!
+Nach dem HTTP/1.1-Protokoll besteht eine Antwort auf einen GET-Request aus einem Header (im Beispiel Zeilen 1 bis 5) und, getrennt durch eine Leerzeile, den eigentlichen Daten, die Byte-weise gesendet werden (im Beispiel ab Zeile 7):4
 
-Umgang mit Klassen-Templates und Überladen von Operatoren; Arbeitsweise von Smartpointern
-Standard-Idiome in C++ (2P)
+    HTTP/1.1 200 OK
+    Connection: close
+    Content-Language: de
+    Content-Length: <Laenge des Content in Byte>
+    Content-Type: <Content Type>
 
-Gerade im Zusammenhang mit Smartpointern werden in C++ häufig die Idiome “RAII” (Resource Acquisition Is Initialisation) und “PIMPL” (Pointer to Implementation) verwendet.
+    <Content (Byte-weise)>
 
-Recherchieren Sie, was diese Idiome bedeuten und wie sie umgesetzt und genutzt werden. Erläutern Sie im Lerntagebuch anhand selbst implementierter Beispiele die Funktionsweise. Wo werden diese Idiome angewendet und warum?
+Die Zeilen im Header sowie die Leerzeile sind wieder mit \r\n terminiert. Nach dem Versand des letzten Bytes wird die Verbindung zum Client geschlossen.
 
-Einarbeitung in zwei Standard-Idiome in C++: RAII und PIMPL
+Implementieren Sie Methoden zum Generieren des Headers. Beachten Sie dabei, dass in den Header die Größe des Contents (in Byte) und der Typ des Contents mit eingehen. Erweitern Sie die Antwort auf GET-Requests aus der vorigen Aufgabe, indem Sie den Pfad in etwas HTML-Code verpacken. Der entsprechende Content-Type im Header ist dafür text/html.
+
+Umgang mit dem HTTP-Protokoll: Antwort auf Requests
+Ausliefern von Dateien (2P)
+
+Erweitern Sie Ihren Server nun um das Ausliefern von Dateien. Erkennen Sie dabei folgende Dateitypen an den angegebenen Dateiendungen und senden Sie im Header Ihrer Antwort den passenden Content-Type:
+
+    HTML (.html): text/html
+    Text-Dateien (.txt, .h, .c, .c++): text/plain
+    PDF (.pdf): application/pdf
+    PNG (.png): image/png
+    JPG (.jpg): image/jpeg
+    CSS (.css): text/css
+    Sonstige: application/octet-stream
+
+Achten Sie darauf, dass Sie wirklich nur Dateien unterhalb von www-path ausliefern! Liefern Sie den Fehler 404 (Not Found) zurück, wenn eine nicht existierende Datei angefordert wurde.
+
+Umgang mit dem HTTP-Protokoll: Versenden von Dateien
+Automatische Anzeige von Verzeichnissen (2P)
+
+Erweitern Sie den Server so, dass nicht nur Dateien ausgeliefert, sondern auch Verzeichnisse angezeigt werden.
+
+    Falls im angefragten Verzeichnis eine index.html-Datei ist, soll diese an den Client ausgeliefert werden.
+
+    Anderenfalls antwortet der Server mit einer dynamisch erstellten HTML-Datei, deren Inhalt der Ausgabe von ls -g in der Konsole entspricht.
+
+    Die Datei- und Verzeichnisnamen sollen dabei als Link dargestellt werden, d.h. ein Klick auf einen Dateinamen liefert den Inhalt der Datei bzw. bei Keinen Verzeichnisnamen den Inhalt (wieder als HTML aufbereitet).
+
+    Sollte das Verzeichnis nicht vorhanden sein, muss wieder mit dem Fehler 404 (Not Found) geantwortet werden.
+
+Sie müssen hier mit stat(2) bzw. fstat(2) und readdir(3) (struct dirent) arbeiten. Sie können sich u.U. viel Arbeit sparen, indem Sie Streams geschickt einsetzen.
+
+Umgang mit Datei- und Verzeichnismanipulation in C/C++
+Prozesse und Daemonen (1P)
+
+Lassen Sie den Webserver als UNIX-Daemon laufen.
+
+Der Daemon darf sich nicht mehrfach starten lassen. Er darf bei erfolgreichem Start keine Ausgaben/Eingaben auf/von der Konsole machen.
+
+Ergänzen Sie das run-Target in Ihrem Makefile: Dieses soll zusätzlich den Webserver als Daemon starten.
+
+UNIX-Daemonen
+Syslog (1P)
+
+Der Daemon soll seine Aktivitäten im System-Log mit Hilfe von syslog(3) loggen.
+
+Als Name soll für den Hauptprozess der String “Temperatur-Daemon” verwendet werden. Als “Facility” nutzen Sie LOG_USER und als Level LOG_INFO. Lassen Sie hinter dem Namen jeweils automatisch die PID des loggenden Prozesses ausgeben (dies erreichen Sie durch eine passende Option!).
+
+Loggen Sie mindestens folgende Aktionen:
+
+    Start des Daemons
+    Empfang und Bearbeitung von Signalen (Signalnummer mit loggen!)
+    Empfang und Bearbeitung von HTTP-GET-Requests (s.u.)
+    Sämtliche auftretenden Fehler (statt fprintf() bzw. cerr << ...).
+
+Das System-Log können Sie mit tail -f /var/log/syslog ansehen.
+
+Falls die Datei unter /var/log/syslog auf Ihrer Distribution nicht zu finden ist, dann liegt es daran, dass einige Distributionen schon auf journald als neuen Logger umgestiegen sind – Raspbian gehört noch nicht dazu. Um sich den System-Log anzeigen zu lassen, nutzen Sie in diesem Fall journalctl5.
+
+Loggen mit syslog, Selbststudium von man 3 syslog
+Signale (1P)
+
+Erweitern Sie Ihren Webserver um zwei Signalhandler:
+
+    Mit dem Signal SIGHUP sollen der Webserver seinen Status (Arbeitsverzeichnis, beantwortete Anfragen, …) in das Syslog schreiben.
+
+    Fügen Sie einen Signalhandler für SIGTERM hinzu, um das Programm zu beenden. Die Aktion soll ebenfalls im Syslog festgehalten werden.
+
+Blockieren Sie während der Behandlung eines Signals die anderen behandelten Signale, d.h. alle anderen Signale, für die Sie Signalhandler registriert haben.
+
+Umgang mit Signalen
 
 HOME
 
-    Dereferenzierung von Null-Pointern oder nicht initialisierten Pointern, Nutzung von delete für Pointer, die nicht mit new erstellt wurden, mehrfaches delete, Speicherlöcher durch Vergessen von delete, Dangling Pointer, verwitwete Objekte, …↩︎
+    Betrachten Sie nur einfache GET-Requests und das HTTP 1.1-Protokoll.↩︎
 
-    Sie müssen dafür den g++ auf C++11 oder höher umstellen (--std=c++11) und den Header <cstddef> includen.↩︎
+    Achtung, manchmal leider auch nur mit \n!↩︎
+
+    Die Protokollvariante steht als letztes Token in der ersten Zeile des Requests.↩︎
+
+    Hinweis: Es gibt noch viele weitere Header-Zeilen/-Felder. Für dieses Blatt soll die gezeigte Minimalvariante reichen.↩︎
+
+    wiki.archlinux.org/index.php/systemd#Journal↩︎
 
