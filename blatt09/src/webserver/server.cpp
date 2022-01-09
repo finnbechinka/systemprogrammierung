@@ -54,8 +54,9 @@ string buildHeader(size_t len, string type){
     res += "Connection: close\n";
     res += "Content-Language: de\n";
     res += "Content-Length: ";
-    res += len;
+    res += to_string(len);
     res += "\n";
+    res += "Content-Type: ";
     res += type;
     res += "\n\n";
 
@@ -150,8 +151,9 @@ int detectContentType(string path, uint16_t port){
                     //size_t filesize = ftell(file);
                     //rewind(file);
                     string content = readFile(file);
+                    string ext = filepath.substr(filepath.find_last_of('.'), filepath.length());
                     msg.clear();
-                    msg += buildHeader(content.length(), "text/html");
+                    msg += buildHeader(content.length(), ext);
                     n = -1;
                     n = send(in_fd, msg.c_str(), msg.length(), 0);
                     n = -1;
