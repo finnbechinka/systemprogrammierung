@@ -1,4 +1,8 @@
 // g++ -std=c++14 -o fbtHttpd server.cpp
+// ./fbtHttpd testfolder1 15151
+// ps -xj | grep fbtHttpd
+// kill -1 12743    SIGHUP
+// kill -15 12743    SIGTERM
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -23,6 +27,15 @@ using namespace std;
 #define MAXBUF      1024
 #define MYPORT      15151
 
+struct wsStatus
+{
+    string status;
+    int getcount;
+    string wDir;
+};
+
+wsStatus serverStatus = {.status = "", .getcount = 0, .wDir = ""};
+
 string buildHeader(size_t len, string ext);
 string readFile(FILE* file);
 int mysend(int fd, const char *buf, size_t n, int flags);
@@ -32,6 +45,7 @@ void sigtermHandler(int sig);
 
 
 int main(int argc, char* argv[]) {
+
     pid_t p;
     int a = 99;
 
@@ -177,7 +191,19 @@ int mysend(int fd, const char *buf, size_t n, int flags){
 
 void sighupHandler(int sig){
     if(sig == SIGHUP){
-        syslog(LOG_INFO, "sighuphandler called: nothing yet");
+        syslog(LOG_INFO, "sighuphandler called: webserver status wird gelogged");
+        string tmp;
+        tmp += "webserver status: ";
+        tmp += serverStatus.status;
+        syslog(LOG_INFO, tmp.c_str());
+        tmp.clear();
+        tmp += "webserver get-req count: ";
+        tmp += to_string(serverStatus.getcount);
+        syslog(LOG_INFO, tmp.c_str());
+        tmp.clear();
+        tmp += "webserver working dir: ";
+        tmp += serverStatus.wDir;
+        syslog(LOG_INFO, tmp.c_str());
     }
 }
 
@@ -189,11 +215,13 @@ void sigtermHandler(int sig){
 }
 
 int startWebserver(int argc, char* argv[]){
+    serverStatus.status = "starting: server wird aufgesetzt";
     uint16_t port = 0;
     string path = "";
     if(argc == 3){
         path = string(argv[1]);
         port = stoi(string(argv[2]));
+        serverStatus.wDir = path;
     }else{
         // falsche argumente
         syslog(LOG_INFO, "argumentanzahl falsch");
@@ -227,7 +255,9 @@ int startWebserver(int argc, char* argv[]){
     int in_fd;
     for (;;) { // Server-Schleife
         // Verbindung annehmen und blockieren, bis Verbindung
+        serverStatus.status = "idle: wate auf verbindung";
         in_fd = accept(fd, NULL, NULL); // Adresse vom Komm.-Partner interessiert mich nicht
+        serverStatus.status = "working: verbindung aufgenommen";
         syslog(LOG_INFO, "verbindung aufgenommen");
 
         for (;;) { // Kommunikation mit Client
@@ -263,6 +293,8 @@ int startWebserver(int argc, char* argv[]){
             string msg = "req error";
             //gucken ob get request
             if(parsedFirstLine.at(0) == "GET"){
+                serverStatus.status = "working: bearbeite get req";
+                serverStatus.getcount = serverStatus.getcount + 1;
                 syslog(LOG_INFO, "GET request empfangen");
                 string filepath;
                 filepath += path;
@@ -283,7 +315,7 @@ int startWebserver(int argc, char* argv[]){
                     msg.clear();
                     msg += "Fehler 404 (Not Found)";
                     mysend(in_fd, msg.c_str(), msg.length(), 0);
-                } 
+                }
             }else{
                 // echo
                 msg.clear();
