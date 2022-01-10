@@ -191,6 +191,12 @@ int mysend(int fd, const char *buf, size_t n, int flags){
 
 void sighupHandler(int sig){
     if(sig == SIGHUP){
+        sigset_t mySet;
+        sigaddset(&mySet, SIGHUP);
+        sigaddset(&mySet, SIGTERM);
+        if(sigprocmask(SIG_SETMASK, &mySet, NULL) < 0){
+            syslog(LOG_INFO, "sighuphandler: error blocking signals");
+        }
         syslog(LOG_INFO, "sighuphandler called: webserver status wird gelogged");
         string tmp;
         tmp += "webserver status: ";
@@ -209,6 +215,12 @@ void sighupHandler(int sig){
 
 void sigtermHandler(int sig){
     if(sig == SIGTERM){
+        sigset_t mySet;
+        sigaddset(&mySet, SIGHUP);
+        sigaddset(&mySet, SIGTERM);
+        if(sigprocmask(SIG_SETMASK, &mySet, NULL) < 0){
+            syslog(LOG_INFO, "sigtermhandler: error blocking signals");
+        }
         syslog(LOG_INFO, "sigtermhandler called: daemon wird beendet");
         exit(EXIT_SUCCESS);
     }
