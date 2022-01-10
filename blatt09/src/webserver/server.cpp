@@ -23,15 +23,82 @@ using namespace std;
 string buildHeader(size_t len, string ext);
 string readFile(FILE* file);
 int mysend(int fd, const char *buf, size_t n, int flags);
+int startWebserver(int argc, char* argv[]);
 
 
 int main(int argc, char* argv[]) {
+    startWebserver(argc, argv);
+
+    return EXIT_SUCCESS;
+}
+
+string buildHeader(size_t len, string ext){
+    string res;
+    string type = "application/octet-stream";
+
+    if(ext == ".html"){
+        type = "text/html";
+    }
+    if(ext == ".txt" || ext == ".h" || ext == ".c" || ext == ".cpp"){
+        type = "text/plain";
+    }
+    if(ext == ".pdf"){
+        type = "application/pdf";
+    }
+    if(ext == ".png"){
+        type = "image/png";
+    }
+    if(ext == ".jpg"){
+        type = "image/jpeg";
+    }
+    if(ext == ".css"){
+        type = "text/css";
+    }
+
+    res += "HTTP/1.1 200 OK\n";
+    res += "Connection: close\n";
+    res += "Content-Language: de\n";
+    res += "Content-Length: ";
+    res += to_string(len);
+    res += "\n";
+    res += "Content-Type: ";
+    res += type;
+    res += "\n\n";
+
+    return res;
+}
+
+string readFile(FILE* file){
+    string content;
+    char line[500];
+    while(fgets(line, 500, file) != NULL){
+        //puts(line);
+        content.append(string(line));
+    }
+    return content;
+}
+
+int mysend(int fd, const char *buf, size_t n, int flags){
+    ssize_t bytesWritten = -1;
+    while(n > 0){
+        bytesWritten = send(fd, buf, n, flags);
+        if(bytesWritten == -1){
+            return -1;
+        }
+        n -= bytesWritten;
+        buf += bytesWritten;
+    }
+    return 0;
+}
+
+int startWebserver(int argc, char* argv[]){
     uint16_t port = 0;
     string path = "";
     if(argc == 3){
         path = string(argv[1]);
         port = stoi(string(argv[2]));
     }else{
+        // falsche argumente
         return EXIT_FAILURE;
     }
 
@@ -123,65 +190,5 @@ int main(int argc, char* argv[]) {
 
     // Sockets schliessen
     close(fd);
-
     return EXIT_SUCCESS;
-}
-
-string buildHeader(size_t len, string ext){
-    string res;
-    string type = "application/octet-stream";
-
-    if(ext == ".html"){
-        type = "text/html";
-    }
-    if(ext == ".txt" || ext == ".h" || ext == ".c" || ext == ".cpp"){
-        type = "text/plain";
-    }
-    if(ext == ".pdf"){
-        type = "application/pdf";
-    }
-    if(ext == ".png"){
-        type = "image/png";
-    }
-    if(ext == ".jpg"){
-        type = "image/jpeg";
-    }
-    if(ext == ".css"){
-        type = "text/css";
-    }
-
-    res += "HTTP/1.1 200 OK\n";
-    res += "Connection: close\n";
-    res += "Content-Language: de\n";
-    res += "Content-Length: ";
-    res += to_string(len);
-    res += "\n";
-    res += "Content-Type: ";
-    res += type;
-    res += "\n\n";
-
-    return res;
-}
-
-string readFile(FILE* file){
-    string content;
-    char line[500];
-    while(fgets(line, 500, file) != NULL){
-        //puts(line);
-        content.append(string(line));
-    }
-    return content;
-}
-
-int mysend(int fd, const char *buf, size_t n, int flags){
-    ssize_t bytesWritten = -1;
-    while(n > 0){
-        bytesWritten = send(fd, buf, n, flags);
-        if(bytesWritten == -1){
-            return -1;
-        }
-        n -= bytesWritten;
-        buf += bytesWritten;
-    }
-    return 0;
 }
