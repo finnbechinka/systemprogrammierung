@@ -3,12 +3,16 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <vector>
 #include <sstream>
 #include <cstring>
 #include <cstdio>          // perror()
 #include <cstdlib>         // abort()
+#include <csignal>
 
 #include <iostream>
 #include <string>
@@ -27,9 +31,66 @@ int startWebserver(int argc, char* argv[]);
 
 
 int main(int argc, char* argv[]) {
-    startWebserver(argc, argv);
+    pid_t p;
+    int a = 99;
 
-    return EXIT_SUCCESS;
+    p = fork();
+
+    a += p;     /* wird im Kind- und Elternprozess verschiedene Werte bekommen */
+
+    if (p == 0) {
+        /* child */
+        if (setsid() < 0){
+            // error beim versuch neue session zu erstellen
+            exit(EXIT_FAILURE);
+        }
+        //waechseln in anderes arbeitsverzeichnis: im moment nicht gewollt
+        //umask(0);
+        //chdir("");
+
+        //geerbte filedeskriptoren schliessen
+        for (int i=0; i < sysconf(_SC_OPEN_MAX); i++) { 
+            close(i);
+        }
+
+        //Standard-I/O-Kanaele umlenken, mit O_EXCL /dev/null exklusiv oeffnen damit nur eine instanz laeuft
+        int status = open("/dev/null", O_EXCL); /* stdin,  0 */
+        if(status == EEXIST){
+            //eine daemon instanz lauft schon
+            return EXIT_FAILURE
+        }         
+        dup2(STDIN_FILENO, STDOUT_FILENO); /* stdout, 1 */
+        dup2(STDIN_FILENO, STDERR_FILENO); /* stderr, 2 */
+
+        //SIGINT UND SIGWINCH ingnorieren, empfohlen in vorlesung
+        signal(SIGINT, SIG_IGN);
+        signal(SIGWINCH, SIG_IGN);
+
+        //alle anderen auf default setzen
+        signal(SIGCHLD, SIG_DFL);
+        signal(SIGSTOP, SIG_DFL);
+        signal(SIGSEGV, SIG_DFL);
+        signal(SIGHUP, SIG_DFL);
+        signal(SIGTERM, SIG_DFL);
+        signal(SIGKILL, SIG_DFL);
+        signal(SIGALRM, SIG_DFL);
+
+        //signalmaske löschen
+        //sigprocmask();
+
+        //prozess ist nun deamon: eigentliche funktionalitaet starten
+        startWebserver(argc, argv);
+        exit(EXIT_SUCCESS);
+
+    } else if (p > 0) {
+        /* parent */
+        //sleep(10);
+        exit(EXIT_SUCCESS);
+
+    } else {
+        /* error */
+        exit(EXIT_FAILURE);
+    }
 }
 
 string buildHeader(size_t len, string ext){
