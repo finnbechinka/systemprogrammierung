@@ -15,8 +15,8 @@
 #include <vector>
 #include <sstream>
 #include <cstring>
-#include <cstdio>          // perror()
-#include <cstdlib>         // abort()
+#include <cstdio>
+#include <cstdlib>
 #include <csignal>
 
 #include <iostream>
@@ -36,7 +36,7 @@ struct wsStatus
 
 wsStatus serverStatus = {.status = "", .getcount = 0, .wDir = ""};
 
-string buildHeader(size_t len, string ext);
+string buildHeader(size_t len, string ext, int statusCode);
 string readFile(FILE* file);
 int mysend(int fd, const char *buf, size_t n, int flags);
 int startWebserver(int argc, char* argv[]);
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
         signal(SIGWINCH, SIG_IGN);
 
         //signalmaske löschen
-        // sigprocmask();
+        //sigprocmask();
 
         if(signal(SIGHUP, sighupHandler) == SIG_ERR){
             syslog(LOG_INFO, "sighuphandler zuweisung sigerr");
@@ -129,9 +129,10 @@ int main(int argc, char* argv[]) {
     }
 }
 
-string buildHeader(size_t len, string ext){
+string buildHeader(size_t len, string ext, int statusCode){
     string res;
     string type = "application/octet-stream";
+    string status = "HTTP/1.1 ";
 
     if(ext == ".html"){
         type = "text/html";
@@ -152,7 +153,15 @@ string buildHeader(size_t len, string ext){
         type = "text/css";
     }
 
-    res += "HTTP/1.1 200 OK\n";
+    if(statusCode == 200){
+        status += "200 OK";
+    }
+    if(statusCode == 404){
+        status += "404 Not Found";
+    }
+
+
+    res += status;
     res += "Connection: close\n";
     res += "Content-Language: de\n";
     res += "Content-Length: ";
@@ -317,15 +326,17 @@ int startWebserver(int argc, char* argv[]){
                     string content = readFile(file);
                     string ext = filepath.substr(filepath.find_last_of('.'), filepath.length());
                     msg.clear();
-                    msg += buildHeader(content.length(), ext);
+                    msg += buildHeader(content.length(), ext, 200);
                     msg += content;
                     mysend(in_fd, msg.c_str(), msg.length(), 0);
                     syslog(LOG_INFO, "angefragte Datei ausgeliefert");
                     fclose(file);
                 } else {
                     syslog(LOG_INFO, "angefragte Datei nicht gefunden");
+                    string content = "Fehler 404 (Not Found)";
                     msg.clear();
-                    msg += "Fehler 404 (Not Found)";
+                    msg += buildHeader(content.length(), ".txt", 404);
+                    msg += content;
                     mysend(in_fd, msg.c_str(), msg.length(), 0);
                 }
             }else{
