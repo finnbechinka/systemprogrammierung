@@ -1,6 +1,7 @@
 // g++ -std=c++14 -o fbtHttpd server.cpp
 // ./fbtHttpd testfolder1 15151
 // ps -xj | grep fbtHttpd
+// tail -f /var/log/syslog
 // kill -1 12743    SIGHUP
 // kill -15 12743    SIGTERM
 #include <sys/socket.h>
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
             //kill parent
             exit(EXIT_SUCCESS);
         }
-        //als child(jetzt daemon) fortfahren
+        //als child fortfahren
 
         umask(0);
         //waechseln in anderes arbeitsverzeichnis: im moment nicht gewollt
