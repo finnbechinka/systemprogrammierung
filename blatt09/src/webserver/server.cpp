@@ -4,6 +4,7 @@
 // tail -f /var/log/syslog
 // kill -1 12743    SIGHUP
 // kill -15 12743    SIGTERM
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -87,17 +88,19 @@ int main(int argc, char* argv[]) {
             close(i);
         }
 
+        openlog("Temperatur-Daemon", LOG_PID, LOG_USER);
+        syslog(LOG_INFO, "Daemon gestartet");
+
         //Standard-I/O-Kanaele umlenken, mit O_EXCL /dev/null exklusiv oeffnen damit nur eine instanz laeuft
-        int status = open("/dev/null", O_EXCL); /* stdin,  0 */
-        if(status == EEXIST){
+        int status = -1;
+        status = open("/dev/null", O_EXCL); /* stdin,  0 */
+        if(status < 0 ){
             //eine daemon instanz lauft schon
-            return EXIT_FAILURE;
+            syslog(LOG_INFO, "eine daemon instanz lauft schon, exit");
+            exit(EXIT_FAILURE);
         }
         dup2(STDIN_FILENO, STDOUT_FILENO); /* stdout, 1 */
         dup2(STDIN_FILENO, STDERR_FILENO); /* stderr, 2 */
-
-        openlog("Temperatur-Daemon", LOG_PID, LOG_USER);
-        syslog(LOG_INFO, "Daemon gestartet");
 
         //SIGINT UND SIGWINCH ingnorieren, empfohlen in vorlesung
         signal(SIGINT, SIG_IGN);
@@ -163,7 +166,7 @@ string buildHeader(size_t len, string ext, int statusCode){
 
 
     res += status;
-    res += "Connection: close\n";
+    res += "\nConnection: close\n";
     res += "Content-Language: de\n";
     res += "Content-Length: ";
     res += to_string(len);
